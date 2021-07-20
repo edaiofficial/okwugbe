@@ -1,6 +1,8 @@
 # asr-africa
 Automatic Speech Recognition for African Language
 
+## Usage
+
 ## Citation
 Please cite our paper using the citation below if you use our work in anyway:
 
