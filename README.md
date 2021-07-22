@@ -29,7 +29,7 @@ The primary targets are African languages, but it supports other languages as we
 | `--train_path` | Path to training set | required |
 | `--test_path` | Path to testing set | required |
 | `--learning_rate` | Learning rate | 3e-5 |
-| `--batch_size` | Learning rate | 3e-5 |
+| `--batch_size` | Batch Size | 3e-5 |
 | `--patience` | Early Stopping Patience | 20 |
 | `--epochs` | Training epochs | 500 |
 | `--optimizer` | Optimizer | 'adamw' |
