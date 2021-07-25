@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+src/okwugbe/__init__.py
+src/okwugbe/model.py
+src/okwugbe/train_eval.py
+src/okwugbe.egg-info/PKG-INFO
+src/okwugbe.egg-info/SOURCES.txt
+src/okwugbe.egg-info/dependency_links.txt
+src/okwugbe.egg-info/top_level.txt
