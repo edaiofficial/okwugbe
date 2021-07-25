@@ -118,11 +118,7 @@ def valid(model, device, test_loader, criterion, iter_meter, experiment, text_tr
 
 
 def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, iter_meter, experiment, valid_loader,
-          best_wer, model_path, text_transform, patience=20, batch_multiplier=1, grad_acc=False, is_resumed=False):
-    if is_resumed:
-        early_stopping = EarlyStopping(patience, model_path, best_wer, best_wer)
-    else:
-        early_stopping = EarlyStopping(patience, model_path, None, np.Inf)
+          best_wer, model_path, text_transform, early_stopping, batch_multiplier=1, grad_acc=False):
     model.train()
     data_len = len(train_loader.dataset)
     train_loss = 0
@@ -313,14 +309,16 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
         epoch_saved = checkpoint['epoch']
         best_wer = checkpoint['best_wer']
         print("Training resumed from epoch {} with best WER == {}".format(epoch_saved + 1, best_wer))
+        early_stopping = EarlyStopping(patience, model_path, best_wer, best_wer)
         for epoch in range(epoch_saved + 1, epochs + 1):
             best_wer = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
-                             experiment, valid_loader, best_wer, model_path, text_transform, patience=patience,
-                             batch_multiplier=batch_multiplier, grad_acc=grad_acc, is_resumed=True)
+                             experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,
+                             batch_multiplier=batch_multiplier, grad_acc=grad_acc)
     else:
+        early_stopping = EarlyStopping(patience, model_path, None, np.Inf)
         for epoch in range(1, epochs + 1):
             best_wer = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
-                             experiment, valid_loader, best_wer, model_path, text_transform, patience=patience,
+                             experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,
                              batch_multiplier=batch_multiplier, grad_acc=grad_acc)
 
     print("Evaluating on Test data\n")
