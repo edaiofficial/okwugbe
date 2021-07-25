@@ -24,7 +24,7 @@ The primary targets are African languages, but it supports other languages as we
 | `--batch_multiplier` | Batch multiplier for Gradient Accumulation) | 1 (no Gradient Accumulation) |
 | `--grad_acc` | Gradient Accumulation Option | False |
 | `--model_path` | Path for the saved model | './okwugbe_model' |
-| `--characters_set` | Path to the characters set | './characters_set.txt' (Fon + Default Igbo characters set)|
+| `--characters_set` | Path to the .txt file containing unique characters | required |
 | `--validation_set` | Validation set size | 0.2 |
 | `--train_path` | Path to training set | required |
 | `--test_path` | Path to testing set | required |
