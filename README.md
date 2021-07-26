@@ -12,7 +12,6 @@ The primary targets are African languages, but it supports other languages as we
 | `--num_layers` | Number of Layers | 1 |
 | `--n_cnn` | Number of CNN components | 5 |
 | `--n_rnn` | Number of RNN components | 3 |
-| `--n_class` | Number of unique characters + 1 | 60 |
 | `--n_feats` | Number of features for the ResCNN | 128 |
 | `--in_channels` | Number of input channels of the ResCNN | 1 |
 | `----out_channels` | Number of output channels of the ResCNN | 32 |
