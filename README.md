@@ -42,7 +42,7 @@ Executing the follwoing will launch the training with default parameters (the be
 - the second one containing the textual transcription of audio contents
 
 ## TODO (as of now)
-* Add automatic building of character set and deduction of the `n_class` parameter value
+* Add automatic building of character set
 
 ## Citation
 Please cite our paper using the citation below if you use our work in anyway:
