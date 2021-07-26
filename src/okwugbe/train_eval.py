@@ -35,7 +35,7 @@ parser.add_argument("--num_layers", help="Number of Layers", default=1, type=int
 # ============================== ASR Model Parameters ================================
 parser.add_argument("--n_cnn", help="Number of CNN components", default=5, type=int)
 parser.add_argument("--n_rnn", help="Number of RNN components", default=3, type=int)
-parser.add_argument("--n_class", help="Number of characters + 1", default=60, type=int)
+# parser.add_argument("--n_class", help="Number of characters + 1", default=60, type=int)
 parser.add_argument("--n_feats", help="Number of features for the ResCNN", default=128, type=int)
 parser.add_argument("--in_channels", help="Number of input channels of the ResCNN", default=1, type=int)
 parser.add_argument("--out_channels", help="Number of output channels of the ResCNN", default=32, type=int)
@@ -231,6 +231,7 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
 
     print('Characters set: {}'.format(text_transform.char_map))
     print('Characters set length: {}'.format(len(text_transform.char_map)))
+    print('Number of classes: {}'.format(len(text_transform.char_map) + 1))
 
     hparams = {
         "n_cnn_layers": cnn_layer,
@@ -326,21 +327,23 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
 
 
 def run(args):
-    n_cnn, n_rnn, rnn_dim, n_class = args.n_cnn, args.n_rnn, args.rnn_dim, args.n_class
+    n_cnn, n_rnn, rnn_dim = args.n_cnn, args.n_rnn, args.rnn_dim
     n_feats = args.n_feats
     in_channels, out_channels, kernel = args.in_channels, args.out_channels, args.kernel
     stride, padding = args.stride, args.padding
     dropout, with_attention, num_layers = args.dropout, args.with_attention, args.num_layers
+    batch_multiplier, grad_acc, model_path, path_char_sets = args.batch_multiplier, args.grad_acc, args.model_path, args.characters_set
+
+    text_transform = TextTransform(path_char_sets)
+    # n_class = , args.n_class
+    n_class = len(text_transform.char_map) + 1
 
     asr_model = SpeechRecognitionModel(n_cnn, n_rnn, rnn_dim, n_class, n_feats, in_channels, out_channels, kernel,
                                        stride, dropout, with_attention, num_layers)
 
-    batch_multiplier, grad_acc, model_path, path_char_sets = args.batch_multiplier, args.grad_acc, args.model_path, args.characters_set
-
     validation_size, train_path, test_path, learning_rate = args.validation_set, args.train_path, args.test_path, args.learning_rate
     batch_size, epochs, optimizer, patience = args.batch_size, args.epochs, args.optimizer, args.patience
 
-    text_transform = TextTransform(path_char_sets)
     experiment = {'loss': [], 'val_loss': [], 'cer': [], 'wer': []}
 
     main(asr_model, train_path, test_path, validation_size, learning_rate, batch_size, epochs, experiment, n_cnn, n_rnn,
