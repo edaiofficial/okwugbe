@@ -35,7 +35,7 @@ The primary targets are African languages, but it supports other languages as we
 
 ## Usage
 Executing the follwoing will launch the training with default parameters (the best ones in our study)
-`python train_eval.py --train_path /path/to/training_file.csv --test_path /path/to/training_file.csv`
+`python train_eval.py --train_path /path/to/training_file.csv --test_path /path/to/training_file.csv --characters_set /path/to/character_set.txt`
 
 * /path/to/training_file.csv and /path/to/training_file.csv are meant to be csv files with two columns:
 - the first one containing the full paths to audio wav files
