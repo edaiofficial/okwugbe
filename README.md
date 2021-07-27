@@ -1,5 +1,5 @@
 ## Okwugbe
-Automatic Speech Recognition for African Language
+Minimalist Automatic Speech Recognition Library for African Languages
 
 ## Context
 NB: This library follows our work [Okwugbé](https://arxiv.org/abs/2103.07762) on ASR for Fon and Igbo. Based on the architecture of the network described in our
