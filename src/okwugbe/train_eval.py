@@ -64,7 +64,7 @@ parser.add_argument("--optimizer", help="Optimizer", default='adamw', type=str)
 
 
 # Usage
-# python train_eval.py --train_path C:/Users/pancr/Downloads/asr_fon_data/train_.csv --test_path C:/Users/pancr/Downloads/asr_fon_data/test_.csv --n_class 60
+# python train_eval.py --train_path C:/Users/pancr/Downloads/asr_fon_data/train_.csv --test_path C:/Users/pancr/Downloads/asr_fon_data/test_.csv --characters_set C:/Users/pancr/Downloads/characters_set.txt
 
 class IterMeter(object):
     """keeps track of total iterations"""
