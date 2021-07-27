@@ -39,17 +39,16 @@ The primary targets are African languages, but it supports other languages as we
         - train_path = '/path/to/training_file.csv'
         - test_path = '/path/to/testing_file.csv'
         - characters_set = '/path/to/character_set.txt'
+    
+    - /path/to/training_file.csv and /path/to/testing_file.csv are meant to be csv files with two columns:
+    - the first one containing the full paths to audio wav files
+    - the second one containing the textual transcription of audio contents
 
 * Initialize the trainer instance
     - train = Train_Okwugbe(train_path, test_path, characters_set)
 
 * Start the training
     - train.run()
-
-
-* /path/to/training_file.csv and /path/to/training_file.csv are meant to be csv files with two columns:
-- the first one containing the full paths to audio wav files
-- the second one containing the textual transcription of audio contents
 
 ## TODO (as of now)
 * Add automatic building of character set
