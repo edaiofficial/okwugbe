@@ -25,46 +25,7 @@ RED = colorama.Fore.RED
 process = process()
 decoders = Decoders()
 metrics = Metrics()
-parser = argparse.ArgumentParser()
 
-# =========== Model's Arguments ======================================================
-# ----------------- LSTM & GRU Parameters --------------------------------------------
-parser.add_argument("--rnn_dim", help="RNN Dimension & Hidden Size", default=512, type=int)
-parser.add_argument("--num_layers", help="Number of Layers", default=1, type=int)
-
-# ============================== ASR Model Parameters ================================
-parser.add_argument("--n_cnn", help="Number of CNN components", default=5, type=int)
-parser.add_argument("--n_rnn", help="Number of RNN components", default=3, type=int)
-# parser.add_argument("--n_class", help="Number of characters + 1", default=60, type=int)
-parser.add_argument("--n_feats", help="Number of features for the ResCNN", default=128, type=int)
-parser.add_argument("--in_channels", help="Number of input channels of the ResCNN", default=1, type=int)
-parser.add_argument("--out_channels", help="Number of output channels of the ResCNN", default=32, type=int)
-
-parser.add_argument("--kernel", help="Kernel Size for the ResCNN", default=3, type=int)
-parser.add_argument("--stride", help="Stride Size for the ResCNN", default=2, type=int)
-parser.add_argument("--padding", help="Padding Size for the ResCNN", default=1, type=int)
-parser.add_argument("--dropout", help="Dropout for all components", default=0.1, type=float)
-parser.add_argument("--with_attention",
-                    help="True to include attention mechanism, False else", default=False, type=bool)
-
-parser.add_argument("--batch_multiplier", help="Batch multiplier for Gradient Accumulation", default=1, type=int)
-parser.add_argument("--grad_acc", help="Gradient Accumulation Option", default=False, type=bool)
-parser.add_argument("--model_path", help="Path for the saved model", default='okwugbe_model', type=str)
-parser.add_argument("--characters_set", help="Path to the .txt file containing unique characters", required=True,
-                    type=str)
-
-parser.add_argument("--validation_set", help="Validation set size", default=0.2, type=float)
-parser.add_argument("--train_path", help="Path to training set", required=True, type=str)
-parser.add_argument("--test_path", help="Path to testing set", required=True, type=str)
-parser.add_argument("--learning_rate", help="Learning rate", default=3e-5, type=float)
-parser.add_argument("--batch_size", help="Batch Size", default=20, type=int)
-parser.add_argument("--patience", help="Early Stopping Patience", default=20, type=int)
-parser.add_argument("--epochs", help="Training epochs", default=500, type=int)
-parser.add_argument("--optimizer", help="Optimizer", default='adamw', type=str)
-
-
-# Usage
-# python train_eval.py --train_path C:/Users/pancr/Downloads/asr_fon_data/train_.csv --test_path C:/Users/pancr/Downloads/asr_fon_data/test_.csv --characters_set C:/Users/pancr/Downloads/characters_set.txt
 
 class IterMeter(object):
     """keeps track of total iterations"""
@@ -326,31 +287,45 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
     test(model, device, test_loader, criterion, text_transform)
 
 
-def run(args):
-    n_cnn, n_rnn, rnn_dim = args.n_cnn, args.n_rnn, args.rnn_dim
-    n_feats = args.n_feats
-    in_channels, out_channels, kernel = args.in_channels, args.out_channels, args.kernel
-    stride, padding = args.stride, args.padding
-    dropout, with_attention, num_layers = args.dropout, args.with_attention, args.num_layers
-    batch_multiplier, grad_acc, model_path, path_char_sets = args.batch_multiplier, args.grad_acc, args.model_path, args.characters_set
+class Train_Okwugbe:
+    def __init__(self, train_path, test_path, characters_set, n_cnn=5, n_rnn=3, rnn_dim=512, num_layers=1, n_feats=128,
+                 in_channels=1, out_channels=32, kernel=3, stride=2, padding=1, dropout=0.1, with_attention=False,
+                 batch_multiplier=1, grad_acc=False, model_path='okwugbe_model', learning_rate=3e-5, batch_size=20,
+                 patience=20, epochs=500, optimizer='adamw', validation_size=0.2):
+        self.train_path = train_path
+        self.test_path = test_path
+        self.characters_set = characters_set
+        self.n_cnn = n_cnn
+        self.n_rnn = n_rnn
+        self.rnn_dim = rnn_dim
+        self.num_layers = num_layers
+        self.n_feats = n_feats
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel = kernel
+        self.stride = stride
+        self.padding = padding
+        self.dropout = dropout
+        self.with_attention = with_attention
+        self.batch_multiplier = batch_multiplier
+        self.grad_acc = grad_acc
+        self.model_path = model_path
+        self.learning_rate = learning_rate
+        self.batch_size = batch_size
+        self.patience = patience
+        self.epochs = epochs
+        self.optimizer = optimizer
+        self.validation_size = validation_size
+        self.text_transform = TextTransform(self.characters_set)
+        self.n_class = len(self.text_transform.char_map) + 1
+        self.experiment = {'loss': [], 'val_loss': [], 'cer': [], 'wer': []}
 
-    text_transform = TextTransform(path_char_sets)
-    # n_class = , args.n_class
-    n_class = len(text_transform.char_map) + 1
+    def run(self):
+        asr_model = SpeechRecognitionModel(self.n_cnn, self.n_rnn, self.rnn_dim, self.n_class, self.n_feats,
+                                           self.in_channels, self.out_channels, self.kernel,
+                                           self.stride, self.dropout, self.with_attention, self.num_layers)
 
-    asr_model = SpeechRecognitionModel(n_cnn, n_rnn, rnn_dim, n_class, n_feats, in_channels, out_channels, kernel,
-                                       stride, dropout, with_attention, num_layers)
-
-    validation_size, train_path, test_path, learning_rate = args.validation_set, args.train_path, args.test_path, args.learning_rate
-    batch_size, epochs, optimizer, patience = args.batch_size, args.epochs, args.optimizer, args.patience
-
-    experiment = {'loss': [], 'val_loss': [], 'cer': [], 'wer': []}
-
-    main(asr_model, train_path, test_path, validation_size, learning_rate, batch_size, epochs, experiment, n_cnn, n_rnn,
-         model_path, rnn_dim, text_transform, batch_multiplier, grad_acc, n_class, n_feats, stride, dropout, optimizer,
-         patience)
-
-
-if __name__ == '__main__':
-    args_ = parser.parse_args()
-    run(args_)
+        main(asr_model, self.train_path, self.test_path, self.validation_size, self.learning_rate, self.batch_size,
+             self.epochs, self.experiment, self.n_cnn, self.n_rnn, self.model_path, self.rnn_dim, self.text_transform,
+             self.batch_multiplier, self.grad_acc, self.n_class, self.n_feats,
+             self.stride, self.dropout, self.optimizer, self.patience)
