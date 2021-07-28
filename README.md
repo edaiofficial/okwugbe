@@ -53,7 +53,8 @@ The primary targets are African languages, but it supports other languages as we
 
 ## TODO (as of now)
 * Add automatic building of character set
-
+## Tutorial
+Here's a [Colab tutorial](https://colab.research.google.com/drive/1bZxd7yBOHlqIJBBUUImh8vwF4Zn_A7a5?usp=sharing) on using OkwuGbe
 ## Citation
 Please cite our paper using the citation below if you use our work in anyway:
 
