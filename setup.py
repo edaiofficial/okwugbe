@@ -5,10 +5,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="okwugbe",
-    version="0.0.1",
+    version="0.0.2",
     author="Bonaventure F. P. Dossou - Chris C. Emezue",
     author_email="edai.official.edai@gmail.com",
-    description="Minimalist Automatic Speech Recognition Library for African Languages",
+    description="Automatic Speech Recognition Library for African Languages",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/edaiofficial/asr-africa",
