@@ -55,6 +55,10 @@ The primary targets are African languages, but it supports other languages as we
 * Add automatic building of character set
 ## Tutorial
 Here's a [Colab tutorial](https://colab.research.google.com/drive/1bZxd7yBOHlqIJBBUUImh8vwF4Zn_A7a5?usp=sharing) on using OkwuGbe
+## ASR Data for African languages
+Wondering where to find dataset for your African language. Here are some resources to check:
+- [OpenSLR](https://www.openslr.org/resources.php)
+- [Mozilla Common Voice](https://commonvoice.mozilla.org/en/datasets)
 ## Citation
 Please cite our paper using the citation below if you use our work in anyway:
 
