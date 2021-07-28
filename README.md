@@ -1,9 +1,9 @@
 ## Okwugbe
 Automatic Speech Recognition Library for African Languages
-Our aim is to foster ASR for African languages by making the whole process--from dataset gathering and preprocessing to training--as easy as possible.
+
 
 ## Context
-This library follows our work [Okwugbé](https://arxiv.org/abs/2103.07762) on ASR for Fon and Igbo. Based on the architecture of the network described in our
+Our aim is to foster ASR for African languages by making the whole process--from dataset gathering and preprocessing to training--as easy as possible. This library follows our work [Okwugbé](https://arxiv.org/abs/2103.07762) on ASR for Fon and Igbo. Based on the architecture of the network described in our
 paper, it aims at easing the training process of ASR for other languages.
 The primary targets are African languages, but it supports other languages as well
 ## Parameters
