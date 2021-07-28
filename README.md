@@ -36,7 +36,7 @@ Here are the parameters for the package, as well as their default values
 | `optimizer` | Optimizer | 'adamw' |
 
 ## Usage
-* [pip install okwugbe==0.0.1](https://pypi.org/project/okwugbe/0.0.1/)
+* [pip install okwugbe](https://pypi.org/project/okwugbe/)
 * Import the trainer instance
     - from train_eval import Train_Okwugbe 
         - train_path = '/path/to/training_file.csv'
