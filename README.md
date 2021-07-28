@@ -36,23 +36,27 @@ Here are the parameters for the package, as well as their default values
 | `optimizer` | Optimizer | 'adamw' |
 
 ## Usage
-* [pip install okwugbe](https://pypi.org/project/okwugbe/)
-* Import the trainer instance
-    - from train_eval import Train_Okwugbe 
-        - train_path = '/path/to/training_file.csv'
-        - test_path = '/path/to/testing_file.csv'
-        - characters_set = '/path/to/character_set.txt'
-    
-    - /path/to/training_file.csv and /path/to/testing_file.csv are meant to be csv files with two columns:
-    - the first one containing the full paths to audio wav files
-    - the second one containing the textual transcription of audio contents
+```pip install okwugbe```
+```python
+#Import the trainer instance
+from train_eval import Train_Okwugbe 
 
-* Initialize the trainer instance
-    - train = Train_Okwugbe(train_path, test_path, characters_set)
+train_path = '/path/to/training_file.csv'
+test_path = '/path/to/testing_file.csv'
+characters_set = '/path/to/character_set.txt'
+ 
+'''
+ /path/to/training_file.csv and /path/to/testing_file.csv are meant to be csv files with two columns:
+    the first one containing the full paths to audio wav files
+    the second one containing the textual transcription of audio contents
+'''
 
-* Start the training
-    - train.run()
+#Initialize the trainer instance
+train = Train_Okwugbe(train_path, test_path, characters_set)
 
+#Start the training
+train.run()
+```
 ## TODO (as of now)
 * Add automatic building of character set
 ## Tutorial
