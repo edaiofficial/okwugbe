@@ -34,6 +34,7 @@ The primary targets are African languages, but it supports other languages as we
 | `optimizer` | Optimizer | 'adamw' |
 
 ## Usage
+* [pip install okwugbe==0.0.1](https://pypi.org/project/okwugbe/0.0.1/)
 * Import the trainer instance
     - from train_eval import Train_Okwugbe 
         - train_path = '/path/to/training_file.csv'
