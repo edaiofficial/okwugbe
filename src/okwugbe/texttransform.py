@@ -15,12 +15,13 @@ class TextTransform:
         with open(path, "r", encoding="utf-8") as fh:
             char_map_str = fh.read()
         chars_ = char_map_str.strip().split('\n')
-        self.chars = [c for c in chars_]
+        
         if chars_ == ['']:
             raise ValueError(
                 "Length of the unique characters set should be > 0. Expecting a .txt file with one character per line")
 
         all_chars = special_chars + chars_
+        self.chars = [c for c in all_chars]
         self.char_map = {}
         self.index_map = {}
         for index, char in enumerate(all_chars):
