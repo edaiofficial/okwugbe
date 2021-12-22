@@ -107,9 +107,6 @@ class OkwugbeDatasetForCommonVoice(torch.utils.data.Dataset): #If the user decid
             test = train[:test_size]
             train = train[test_size:]
 
-
-
-        self.train, self.validation, self.test = self.load_data()
         if datatype.lower().strip() == 'train':
             self.data = train
         if datatype.lower().strip() == 'valid':

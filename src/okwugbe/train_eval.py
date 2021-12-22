@@ -213,10 +213,17 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
     device = torch.device("cuda" if use_cuda else "cpu")
     print("Training with: {}".format(device))
 
-    
-    train_dataset = OkwugbeDataset(train_path, test_path, "train", validation_size) if common_voice['use_common_voice']==False else OkwugbeDatasetForCommonVoice(common_voice['lang'],"train",validation_size)
-    valid_dataset = OkwugbeDataset(train_path, test_path, "valid", validation_size) if common_voice['use_common_voice']==False else OkwugbeDatasetForCommonVoice(common_voice['lang'],"valid",validation_size)
-    test_dataset = OkwugbeDataset(train_path, test_path, "test", validation_size) if common_voice['use_common_voice']==False else OkwugbeDatasetForCommonVoice(common_voice['lang'],"test",validation_size)
+    if common_voice['use_common_voice']==True:     
+        train_dataset=OkwugbeDatasetForCommonVoice(common_voice['lang'],"train",validation_size)
+        valid_dataset= OkwugbeDatasetForCommonVoice(common_voice['lang'],"valid",validation_size)
+        test_dataset = OkwugbeDatasetForCommonVoice(common_voice['lang'],"test",validation_size)
+     
+    else:
+        train_dataset = OkwugbeDataset(train_path, test_path, "train", validation_size) 
+        valid_dataset = OkwugbeDataset(train_path, test_path, "valid", validation_size) 
+        test_dataset = OkwugbeDataset(train_path, test_path, "test", validation_size) 
+        
+
 
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
