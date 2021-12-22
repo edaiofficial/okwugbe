@@ -320,6 +320,8 @@ class Train_Okwugbe:
             raise Exception(f'`test_path` cannot be None')
         self.train_path = train_path
         self.test_path = test_path
+        if characters_set==None and use_common_voice==False:
+            raise Exception(f'You need to specify a `characters set .txt` file or use Common Voice data by specifying `use_common_voice=True`.')
         self.characters_set = characters_set if characters_set is not None else generate_character_set(lang)
         self.n_cnn = n_cnn
         self.n_rnn = n_rnn
