@@ -1,13 +1,15 @@
-# https://test.pypi.org/project/okwugbe/0.0.1/
-# https://pypi.org/project/okwugbe/0.0.1/
-
-
 import os
 from okwugbe.model import SpeechRecognitionModel
 import torch
 import torch.nn as nn
 from torch import optim
 import torch.nn.functional as F
+from metrics import Metrics
+from decoder import Decoders
+from texttransform import TextTransform
+from okwugbe_asr import OkwugbeDataset,OkwugbeDatasetForCommonVoice
+from process import process
+from earlystopping import EarlyStopping
 from okwugbe.metrics import Metrics
 from okwugbe.decoder import Decoders
 from okwugbe.texttransform import TextTransform
@@ -16,6 +18,7 @@ from okwugbe.process import process
 from okwugbe.earlystopping import EarlyStopping
 import colorama
 import numpy as np
+from commonvoice import generate_character_set
 
 # init the colorama module
 colorama.init()
@@ -83,6 +86,8 @@ def valid(model, device, test_loader, criterion, iter_meter, experiment, text_tr
 
 def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, iter_meter, experiment, valid_loader,
           best_wer, model_path, text_transform, early_stopping, batch_multiplier=1, grad_acc=False):
+    
+    clipping_value = 5 # Default value
     model.train()
     data_len = len(train_loader.dataset)
     train_loss = 0
@@ -97,7 +102,9 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
         output = F.log_softmax(output, dim=2)
         output = output.transpose(0, 1)  # (time, batch, n_class)
         loss = criterion(output, labels, input_lengths, label_lengths)
+        loss.backward()
 
+        #torch.nn.utils.clip_grad_norm_(model.parameters(), clipping_value)
         # used if grad accumulation is used
         # This is the idea of grad accumulation to overcome memory issue
         if grad_acc:
@@ -114,10 +121,10 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
         else:
             train_loss += loss.item() / len(train_loader)
 
-        loss.backward()
-        optimizer.step()
-        scheduler.step()
-        iter_meter.step()
+  
+            optimizer.step()
+            scheduler.step()
+            iter_meter.step()
 
         if batch_idx % 5 == 0 or batch_idx == data_len:
             text = 'Train Epoch {}: [{}/{} ({:.0f}%)] - Loss: {:.6f}'.format(epoch, batch_idx * len(spectrograms),
@@ -188,13 +195,13 @@ def test(model, device, test_loader, criterion, text_transform):
 def main(model, train_path, test_path, validation_size, learning_rate, batch_size, epochs, experiment, cnn_layer,
          rnn_layer,
          model_path, rnn_dim, text_transform, batch_multiplier, grad_acc, n_class, n_feats, stride, dropout, optimizer,
-         patience):
+         patience,common_voice):
     if grad_acc:
         batch_size = batch_size // batch_multiplier
 
     print('Characters set: {}'.format(text_transform.char_map))
     print('Characters set length: {}'.format(len(text_transform.char_map)))
-    print('Number of classes: {}'.format(len(text_transform.char_map) + 1))
+    print('Number of classes: {}'.format(text_transform.get_num_classes()))
 
     hparams = {
         "n_cnn_layers": cnn_layer,
@@ -210,13 +217,22 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
     }
 
     use_cuda = torch.cuda.is_available()
-    torch.manual_seed(7)
+    
+    #torch.manual_seed(7) #this should be optional
     device = torch.device("cuda" if use_cuda else "cpu")
     print("Training with: {}".format(device))
 
-    train_dataset = OkwugbeDataset(train_path, test_path, "train", validation_size)
-    valid_dataset = OkwugbeDataset(train_path, test_path, "valid", validation_size)
-    test_dataset = OkwugbeDataset(train_path, test_path, "test", validation_size)
+    if common_voice['use_common_voice']==True:     
+        train_dataset=OkwugbeDatasetForCommonVoice(common_voice['lang'],"train",validation_size)
+        valid_dataset= OkwugbeDatasetForCommonVoice(common_voice['lang'],"valid",validation_size)
+        test_dataset = OkwugbeDatasetForCommonVoice(common_voice['lang'],"test",validation_size)
+     
+    else:
+        train_dataset = OkwugbeDataset(train_path, test_path, "train", validation_size) 
+        valid_dataset = OkwugbeDataset(train_path, test_path, "valid", validation_size) 
+        test_dataset = OkwugbeDataset(train_path, test_path, "test", validation_size) 
+        
+
 
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
@@ -256,7 +272,7 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
     if optimizer.lower() not in ['adamw', 'sgd', 'adam']:
         raise ValueError("Current optimizers supported: ['adamw', 'sgd', 'adam']")
 
-    criterion = nn.CTCLoss(blank=n_class - 1, zero_infinity=True).to(device)
+    criterion = nn.CTCLoss(blank=text_transform.get_blank_index(), zero_infinity=True).to(device)
 
     scheduler = optim.lr_scheduler.OneCycleLR(optimizer_, max_lr=hparams['learning_rate'],
                                               steps_per_epoch=int(len(train_loader)),
@@ -290,13 +306,21 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
 
 
 class Train_Okwugbe:
-    def __init__(self, train_path, test_path, characters_set, n_cnn=5, n_rnn=3, rnn_dim=512, num_layers=1, n_feats=128,
+    def __init__(self, train_path=None, test_path=None,lang=None,use_common_voice=False, characters_set=None, n_cnn=5, n_rnn=3, rnn_dim=512, num_layers=1, n_feats=128,
                  in_channels=1, out_channels=32, kernel=3, stride=2, padding=1, dropout=0.1, with_attention=False,
-                 batch_multiplier=1, grad_acc=False, model_path='okwugbe_model', learning_rate=3e-5, batch_size=20,
+                 batch_multiplier=1, grad_acc=False, model_path='okwugbe_model', learning_rate=3e-5, batch_size=80,
                  patience=20, epochs=500, optimizer='adamw', validation_size=0.2):
+        if use_common_voice==True and lang==None:
+            raise Exception(f'`lang` (language from Common Voice) must be specified if use_common_voice is set to True.')
+        self.common_voice = {'use_common_voice':use_common_voice,'lang':lang.strip()}    
+
+        if train_path==None and use_common_voice==False:
+            raise Exception(f'`train_path` cannot be None')
+        if test_path==None and use_common_voice==False:
+            raise Exception(f'`test_path` cannot be None')
         self.train_path = train_path
         self.test_path = test_path
-        self.characters_set = characters_set
+        self.characters_set = characters_set if characters_set is not None else generate_character_set(lang)
         self.n_cnn = n_cnn
         self.n_rnn = n_rnn
         self.rnn_dim = rnn_dim
@@ -312,6 +336,7 @@ class Train_Okwugbe:
         self.batch_multiplier = batch_multiplier
         self.grad_acc = grad_acc
         self.model_path = model_path
+        self.model_path = self.model_path+'_'+lang if lang!=None else self.model_path
         self.learning_rate = learning_rate
         self.batch_size = batch_size
         self.patience = patience
@@ -319,7 +344,7 @@ class Train_Okwugbe:
         self.optimizer = optimizer
         self.validation_size = validation_size
         self.text_transform = TextTransform(self.characters_set)
-        self.n_class = len(self.text_transform.char_map) + 1
+        self.n_class = self.text_transform.get_num_classes()
         self.experiment = {'loss': [], 'val_loss': [], 'cer': [], 'wer': []}
 
     def run(self):
@@ -330,4 +355,4 @@ class Train_Okwugbe:
         main(asr_model, self.train_path, self.test_path, self.validation_size, self.learning_rate, self.batch_size,
              self.epochs, self.experiment, self.n_cnn, self.n_rnn, self.model_path, self.rnn_dim, self.text_transform,
              self.batch_multiplier, self.grad_acc, self.n_class, self.n_feats,
-             self.stride, self.dropout, self.optimizer, self.patience)
+             self.stride, self.dropout, self.optimizer, self.patience,self.common_voice)

@@ -1,4 +1,5 @@
 import unicodedata
+import sys
 
 accent_code = [b'\\u0301', b'\\u0300', b'\\u0306', b'\\u0308', b'\\u0303']
 alpha = {'ɔ': 0, 'ɛ': 5}
@@ -10,40 +11,48 @@ class TextTransform:
     """Maps characters to integers and vice versa"""
 
     def __init__(self, path):
-        special_chars = ["'", "<SPACE>", ".", ","]
+        special_chars = ["'", " ", ".", ","]
         with open(path, "r", encoding="utf-8") as fh:
             char_map_str = fh.read()
         chars_ = char_map_str.strip().split('\n')
+        
         if chars_ == ['']:
             raise ValueError(
                 "Length of the unique characters set should be > 0. Expecting a .txt file with one character per line")
 
-        all_chars = special_chars + chars_
+        all_chars = [c for c in special_chars if c not in chars_]  + chars_
+        self.chars = [c for c in all_chars]
         self.char_map = {}
         self.index_map = {}
         for index, char in enumerate(all_chars):
-            if char == '<SPACE>':
-                ch = ' '
-                self.char_map[ch] = int(index)
-                self.index_map[int(index)] = ch
-            else:
-                self.char_map[char] = int(index)
-                self.index_map[int(index)] = char
+           
+            self.char_map[char] = int(index)
+            self.index_map[int(index)] = char
+
+        #For the blank
+        self.blank_index =  int(len(all_chars)) #Setting BLANK to last class.
+        self.char_map[''] = self.blank_index
+        self.index_map[self.blank_index] = ''
+
+    def get_num_classes(self):
+        return len(self.char_map)
+
+    def get_blank_index(self):
+        return self.blank_index
 
     def text_to_int(self, text):
         """ Use a character map and convert text to an integer sequence """
         int_sequence = []
         text = unicodedata.normalize("NFC", text)
-        for c in self.get_better_mapping(text):
+        #for c in self.get_better_mapping(text):
+        track=''
+        for c in text:
             try:
-                if c == ' ':
-                    ch = self.char_map['<SPACE>']
-                elif c == '̀':
-                    ch = 0
-                else:
-                    ch = self.char_map[c]
+                ch = self.char_map[c]
+                track+=c    
             except KeyError:
-                # print("Error for character {} in this sentence: {}".format(c, text))
+                print("Error for character `{}` in this sentence: {}".format(c, text))
+              
                 ch = 0
             int_sequence.append(ch)
         return int_sequence

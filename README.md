@@ -1,5 +1,5 @@
 ## Okwugbe
-Automatic Speech Recognition Library for African Languages
+Automatic Speech Recognition Library for (low-resource) African Languages
 
 
 ## Context
@@ -10,6 +10,8 @@ The primary targets are African languages, but it supports other languages as we
 Here are the parameters for the package, as well as their default values
 | Parameter | Description | default | 
 | --- | --- | --- |
+| `use_common_voice` | Whether or not to use common voice | False |
+| `lang` | language to use from Common Voice. Must be specified if `use_common_voice` is set to True. | None |
 | `rnn_dim` | RNN Dimension & Hidden Size | 512 |
 | `num_layers` | Number of Layers | 1 |
 | `n_cnn` | Number of CNN components | 5 |
@@ -57,22 +59,78 @@ train = Train_Okwugbe(train_path, test_path, characters_set)
 #Start the training
 train.run()
 ```
+## Integration with Common Voicee
+You easily train on [Common Voice](https://commonvoice.mozilla.org/en) data set with Okwugbe by specifying `use_common_voice=True` and setting `lang` to the language code of your choice. This language must be hosted on Common Voice.
+
+```bash
+supported_languages_of_common_voice = {
+            "tatar": "tt",
+            "english": "en",
+            "german": "de",
+            "french": "fr",
+            "welsh": "cy",
+            "breton": "br",
+            "chuvash": "cv",
+            "turkish": "tr",
+            "kyrgyz": "ky",
+            "irish": "ga-IE",
+            "kabyle": "kab",
+            "catalan": "ca",
+            "taiwanese": "zh-TW",
+            "slovenian": "sl",
+            "italian": "it",
+            "dutch": "nl",
+            "hakha chin": "cnh",
+            "esperanto": "eo",
+            "estonian": "et",
+            "persian": "fa",
+            "portuguese": "pt",
+            "basque": "eu",
+            "spanish": "es",
+            "chinese": "zh-CN",
+            "mongolian": "mn",
+            "sakha": "sah",
+            "dhivehi": "dv",
+            "kinyarwanda": "rw",
+            "swedish": "sv-SE",
+            "russian": "ru",
+            "indonesian": "id",
+            "arabic": "ar",
+            "tamil": "ta",
+            "interlingua": "ia",
+            "latvian": "lv",
+            "japanese": "ja",
+            "votic": "vot",
+            "abkhaz": "ab",
+            "cantonese": "zh-HK",
+            "romansh sursilvan": "rm-sursilv"
+        }
+```
+
 ## TODO (as of now)
-* Add automatic building of character set
+* Add automatic building of character set (this has been done in `commonvoice.py`)
 ## Tutorial
-Here's a [Colab tutorial](https://colab.research.google.com/drive/1bZxd7yBOHlqIJBBUUImh8vwF4Zn_A7a5?usp=sharing) on using OkwuGbe
+- Here's a [Colab tutorial](https://colab.research.google.com/drive/1bZxd7yBOHlqIJBBUUImh8vwF4Zn_A7a5?usp=sharing) on using OkwuGbe
+- Here's a [Colab tutorial](https://colab.research.google.com/drive/12XiQCuQzOr7lye2sFCvsn4Ch_DNevx4u?usp=sharing) on using OkwuGbe with Common Voice 
+
 ## ASR Data for African languages
-Wondering where to find dataset for your African language. Here are some resources to check:
+Wondering where to find dataset for your African language? Here are some resources to check:
 - [OpenSLR](https://www.openslr.org/resources.php)
 - [Mozilla Common Voice](https://commonvoice.mozilla.org/en/datasets)
 ## Citation
 Please cite our paper using the citation below if you use our work in anyway:
 
 ```
-@article{2103.07762,
-Author = {Bonaventure F. P. Dossou and Chris C. Emezue},
-Title = {OkwuGbé: End-to-End Speech Recognition for Fon and Igbo},
-Year = {2021},
-Eprint = {arXiv:2103.07762},
-Howpublished = {African NLP, EACL 2021}
+@inproceedings{dossou-emezue-2021-okwugbe,
+    title = "{O}kwu{G}b{\'e}: End-to-End Speech Recognition for {F}on and {I}gbo",
+    author = "Dossou, Bonaventure F. P.  and
+      Emezue, Chris Chinenye",
+    booktitle = "Proceedings of the Fifth Workshop on Widening Natural Language Processing",
+    month = nov,
+    year = "2021",
+    address = "Punta Cana, Dominican Republic",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.winlp-1.1",
+    pages = "1--4",
+    abstract = "Language is a fundamental component of human communication. African low-resourced languages have recently been a major subject of research in machine translation, and other text-based areas of NLP. However, there is still very little comparable research in speech recognition for African languages. OkwuGb{\'e} is a step towards building speech recognition systems for African low-resourced languages. Using Fon and Igbo as our case study, we build two end-to-end deep neural network-based speech recognition models. We present a state-of-the-art automatic speech recognition (ASR) model for Fon, and a benchmark ASR model result for Igbo. Our findings serve both as a guide for future NLP research for Fon and Igbo in particular, and the creation of speech recognition models for other African low-resourced languages in general. The Fon and Igbo models source code have been made publicly available. Moreover, Okwugbe, a python library has been created to make easier the process of ASR model building and training.",
 }```
