@@ -34,19 +34,3 @@ def generate_character_set(lang):
    
     return file_path 
 
-#This is only for debugging
-def get_better_mapping(text):
-    t_arr = [t for t in text]
-    s = []
-    for i in range(len(t_arr)):
-        if t_arr[i].encode("unicode_escape") in accent_code:
-            to_check = s[-1]
-            try:
-                val = mapping[alpha[to_check] + accents[t_arr[i].encode("unicode_escape")]]
-                s.pop()
-                s.append(val)
-            except KeyError:
-                print("Could not find for {} in sentence {} | Proceeding with default.".format(t_arr[i], text))
-        else:
-            s.append(t_arr[i])
-    return s
