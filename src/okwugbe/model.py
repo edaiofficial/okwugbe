@@ -59,7 +59,6 @@ class BidirectionalGRU(nn.Module):
         self.with_attention = with_attention
 
     def forward(self, x):
-        print(self.BiGRU.input_size, x.shape)
         x = self.layer_norm(x)
         x = F.gelu(x)
         x, hidden = self.BiGRU(x)
@@ -194,11 +193,9 @@ class SpeechRecognitionModel(nn.Module):
         x = self.birnn_layers1(x).to(device)
 
         if self.with_attention:
-            print('Here')
             x = self.birnn_layers2_attention(x).to(device)
             x = self.classifier_attention(x)
         else:
-            print('Here1')
             x = self.birnn_layers2(x).to(device)
             x = self.classifier(x)
         return x
