@@ -197,7 +197,7 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
 
     print('Characters set: {}'.format(text_transform.char_map))
     print('Characters set length: {}'.format(len(text_transform.char_map)))
-    print('Number of classes: {}'.format(len(text_transform.char_map) + 1))
+    print('Number of classes: {}'.format(text_transform.get_num_classes()))
 
     hparams = {
         "n_cnn_layers": cnn_layer,
