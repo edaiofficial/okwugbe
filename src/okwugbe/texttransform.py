@@ -11,7 +11,7 @@ class TextTransform:
     """Maps characters to integers and vice versa"""
 
     def __init__(self, path):
-        special_chars = ["'", "<SPACE>", ".", ","]
+        special_chars = ["","'", " ", ".", ","]
         with open(path, "r", encoding="utf-8") as fh:
             char_map_str = fh.read()
         chars_ = char_map_str.strip().split('\n')
@@ -25,13 +25,9 @@ class TextTransform:
         self.char_map = {}
         self.index_map = {}
         for index, char in enumerate(all_chars):
-            if char == '<SPACE>':
-                ch = ' '
-                self.char_map[ch] = int(index)
-                self.index_map[int(index)] = ch
-            else:
-                self.char_map[char] = int(index)
-                self.index_map[int(index)] = char
+           
+            self.char_map[char] = int(index)
+            self.index_map[int(index)] = char
 
     def text_to_int(self, text):
         """ Use a character map and convert text to an integer sequence """
@@ -41,12 +37,8 @@ class TextTransform:
         track=''
         for c in text:
             try:
-                if c==' ':
-                    ch = self.char_map['<SPACE>']
-                elif c == '':
-                    ch = 0
-                else:
-                    ch = self.char_map[c]
+               
+                ch = self.char_map[c]
                 track+=c    
             except KeyError:
                 print("Error for character `{}` in this sentence: {}".format(c, text))
