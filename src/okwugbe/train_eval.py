@@ -340,7 +340,7 @@ class Train_Okwugbe:
         self.optimizer = optimizer
         self.validation_size = validation_size
         self.text_transform = TextTransform(self.characters_set)
-        self.n_class = len(self.text_transform.char_map) + 1
+        self.n_class = self.text_transform.get_num_classes()
         self.experiment = {'loss': [], 'val_loss': [], 'cer': [], 'wer': []}
 
     def run(self):

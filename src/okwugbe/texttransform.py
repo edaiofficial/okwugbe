@@ -34,6 +34,8 @@ class TextTransform:
         self.char_map[''] = self.blank_index
         self.index_map[self.blank_index] = ''
 
+    def get_num_classes(self):
+        return len(self.char_map)
 
     def get_blank_index(self):
         return self.blank_index
