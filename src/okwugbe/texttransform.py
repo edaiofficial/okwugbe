@@ -38,18 +38,21 @@ class TextTransform:
         int_sequence = []
         text = unicodedata.normalize("NFC", text)
         #for c in self.get_better_mapping(text):
+        track=''
         for c in text:
             try:
-                if c == ' ':
+                if c==' ':
                     ch = self.char_map['<SPACE>']
                 elif c == '':
                     ch = 0
                 else:
                     ch = self.char_map[c]
+                track+=c    
             except KeyError:
                 print("Error for character `{}` in this sentence: {}".format(c, text))
                 print(self.char_map)
                 print(self.chars)
+                print(f'Track: `{track}`')
                 sys.exit(1)
                 ch = 0
             int_sequence.append(ch)
