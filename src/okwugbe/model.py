@@ -59,6 +59,7 @@ class BidirectionalGRU(nn.Module):
         self.with_attention = with_attention
 
     def forward(self, x):
+        print(self.BiGRU.input_size, x.shape)
         x = self.layer_norm(x)
         x = F.gelu(x)
         x, hidden = self.BiGRU(x)
