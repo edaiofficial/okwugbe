@@ -306,10 +306,10 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
 
 
 class Train_Okwugbe:
-    def __init__(self, train_path=None, test_path=None,lang=None,use_common_voice=False, characters_set=None, n_cnn=5, n_rnn=3, rnn_dim=512, num_layers=1, n_feats=128,
+    def __init__(self, train_path=None, test_path=None,characters_set=None, n_cnn=5, n_rnn=3, rnn_dim=512, num_layers=1, n_feats=128,
                  in_channels=1, out_channels=32, kernel=3, stride=2, padding=1, dropout=0.1, with_attention=False,
                  batch_multiplier=1, grad_acc=False, model_path='okwugbe_model', learning_rate=3e-5, batch_size=80,
-                 patience=20, epochs=500, optimizer='adamw', validation_size=0.2):
+                 patience=20, epochs=500, optimizer='adamw', validation_size=0.2,lang=None,use_common_voice=False):
         if use_common_voice==True and lang==None:
             raise Exception(f'`lang` (language from Common Voice) must be specified if use_common_voice is set to True.')
         self.common_voice = {'use_common_voice':use_common_voice,'lang':lang}    
