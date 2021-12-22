@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import argparse
 import os
 from model import SpeechRecognitionModel
@@ -713,4 +713,3 @@ class Train_Okwugbe:
              self.epochs, self.experiment, self.n_cnn, self.n_rnn, self.model_path, self.rnn_dim, self.text_transform,
              self.batch_multiplier, self.grad_acc, self.n_class, self.n_feats,
              self.stride, self.dropout, self.optimizer, self.patience,self.common_voice)
->>>>>>> c0e17f527def6b4f35d75c7162c6d936d3616ad2
