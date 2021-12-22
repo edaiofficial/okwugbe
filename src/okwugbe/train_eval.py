@@ -8,11 +8,12 @@ import torch.nn.functional as F
 from metrics import Metrics
 from decoder import Decoders
 from texttransform import TextTransform
-from okwugbe_asr import OkwugbeDataset
+from okwugbe_asr import OkwugbeDataset,OkwugbeDatasetForCommonVoice
 from process import process
 from earlystopping import EarlyStopping
 import colorama
 import numpy as np
+from commonvoice import generate_character_set
 
 # init the colorama module
 colorama.init()
@@ -186,7 +187,7 @@ def test(model, device, test_loader, criterion, text_transform):
 def main(model, train_path, test_path, validation_size, learning_rate, batch_size, epochs, experiment, cnn_layer,
          rnn_layer,
          model_path, rnn_dim, text_transform, batch_multiplier, grad_acc, n_class, n_feats, stride, dropout, optimizer,
-         patience):
+         patience,common_voice):
     if grad_acc:
         batch_size = batch_size // batch_multiplier
 
@@ -212,9 +213,10 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
     device = torch.device("cuda" if use_cuda else "cpu")
     print("Training with: {}".format(device))
 
-    train_dataset = OkwugbeDataset(train_path, test_path, "train", validation_size)
-    valid_dataset = OkwugbeDataset(train_path, test_path, "valid", validation_size)
-    test_dataset = OkwugbeDataset(train_path, test_path, "test", validation_size)
+    
+    train_dataset = OkwugbeDataset(train_path, test_path, "train", validation_size) if common_voice['use_common_voice']==False else OkwugbeDatasetForCommonVoice(common_voice['lang'],"train",validation_size)
+    valid_dataset = OkwugbeDataset(train_path, test_path, "valid", validation_size) if common_voice['use_common_voice']==False else OkwugbeDatasetForCommonVoice(common_voice['lang'],"valid",validation_size)
+    test_dataset = OkwugbeDataset(train_path, test_path, "test", validation_size) if common_voice['use_common_voice']==False else OkwugbeDatasetForCommonVoice(common_voice['lang'],"test",validation_size)
 
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
@@ -288,13 +290,16 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
 
 
 class Train_Okwugbe:
-    def __init__(self, train_path, test_path, characters_set, n_cnn=5, n_rnn=3, rnn_dim=512, num_layers=1, n_feats=128,
+    def __init__(self, train_path, test_path,lang=None,use_common_voice=False, characters_set=None, n_cnn=5, n_rnn=3, rnn_dim=512, num_layers=1, n_feats=128,
                  in_channels=1, out_channels=32, kernel=3, stride=2, padding=1, dropout=0.1, with_attention=False,
                  batch_multiplier=1, grad_acc=False, model_path='okwugbe_model', learning_rate=3e-5, batch_size=20,
                  patience=20, epochs=500, optimizer='adamw', validation_size=0.2):
+        if use_common_voice==True and lang==None:
+            raise Exception(f'`lang` (language from Common Voice) must be specified if use_common_voice is set to True.')
+        self.common_voice = {'use_common_voice':use_common_voice,'lang':lang.strip()}    
         self.train_path = train_path
         self.test_path = test_path
-        self.characters_set = characters_set
+        self.characters_set = characters_set if characters_set is not None else generate_character_set(lang)
         self.n_cnn = n_cnn
         self.n_rnn = n_rnn
         self.rnn_dim = rnn_dim
@@ -328,4 +333,4 @@ class Train_Okwugbe:
         main(asr_model, self.train_path, self.test_path, self.validation_size, self.learning_rate, self.batch_size,
              self.epochs, self.experiment, self.n_cnn, self.n_rnn, self.model_path, self.rnn_dim, self.text_transform,
              self.batch_multiplier, self.grad_acc, self.n_class, self.n_feats,
-             self.stride, self.dropout, self.optimizer, self.patience)
+             self.stride, self.dropout, self.optimizer, self.patience,self.common_voice)
