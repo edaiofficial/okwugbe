@@ -24,7 +24,7 @@ class process:
         label_lengths = []
 
         for waveform, utterance in data:
-            #print(waveform.shape)
+           
             if data_type == 'train':
                 spec = train_audio_transforms(waveform).squeeze(0).transpose(0, 1)
             elif data_type == 'valid':

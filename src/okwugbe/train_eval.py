@@ -113,6 +113,8 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
             train_loss += loss.item() / len(train_loader)
 
         loss.backward()
+        clipping_value = 5 # Default value
+        torch.nn.utils.clip_grad_norm(model.parameters(), clipping_value)
         optimizer.step()
         scheduler.step()
         iter_meter.step()
