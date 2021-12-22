@@ -59,8 +59,8 @@ train = Train_Okwugbe(train_path, test_path, characters_set)
 #Start the training
 train.run()
 ```
-## Using Common Voice with Okwugbe
-You easily use Common Voice data with Okwugbe by specifying `use_common_voice=True` and setting `lang` to the language code of your choice. This language must be hosted on Common Voice.
+## Integration with Common Voicee
+You easily train on [Common Voice](https://commonvoice.mozilla.org/en) data set with Okwugbe by specifying `use_common_voice=True` and setting `lang` to the language code of your choice. This language must be hosted on Common Voice.
 
 ```bash
 supported_languages_of_common_voice = {
