@@ -312,7 +312,7 @@ class Train_Okwugbe:
                  patience=20, epochs=500, optimizer='adamw', validation_size=0.2):
         if use_common_voice==True and lang==None:
             raise Exception(f'`lang` (language from Common Voice) must be specified if use_common_voice is set to True.')
-        self.common_voice = {'use_common_voice':use_common_voice,'lang':lang.strip()}    
+        self.common_voice = {'use_common_voice':use_common_voice,'lang':lang}    
 
         if train_path==None and use_common_voice==False:
             raise Exception(f'`train_path` cannot be None')
