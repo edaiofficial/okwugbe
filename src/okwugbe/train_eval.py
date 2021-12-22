@@ -1,5 +1,5 @@
 import os
-from okwugbe.model import SpeechRecognitionModel
+from model import SpeechRecognitionModel
 import torch
 import torch.nn as nn
 from torch import optim
@@ -10,12 +10,12 @@ from texttransform import TextTransform
 from okwugbe_asr import OkwugbeDataset,OkwugbeDatasetForCommonVoice
 from process import process
 from earlystopping import EarlyStopping
-from okwugbe.metrics import Metrics
-from okwugbe.decoder import Decoders
-from okwugbe.texttransform import TextTransform
-from okwugbe.okwugbe_asr import OkwugbeDataset
-from okwugbe.process import process
-from okwugbe.earlystopping import EarlyStopping
+from metrics import Metrics
+from decoder import Decoders
+from texttransform import TextTransform
+from okwugbe_asr import OkwugbeDataset
+from process import process
+from earlystopping import EarlyStopping
 import colorama
 import numpy as np
 from commonvoice import generate_character_set
