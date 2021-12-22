@@ -108,12 +108,12 @@ class OkwugbeDatasetForCommonVoice(torch.utils.data.Dataset): #If the user decid
             train = train[test_size:]
 
         if datatype.lower().strip() == 'train':
-            self.data = train
+            self.data = [d for d in train]
         if datatype.lower().strip() == 'valid':
-            self.data = valid
+            self.data = [d for d in valid]
 
         if datatype.lower().strip() == 'test':
-            self.data = test
+            self.data = [d for d in test]
 
         """datatype could be either 'test', 'train' or 'valid' """
 
@@ -125,7 +125,7 @@ class OkwugbeDatasetForCommonVoice(torch.utils.data.Dataset): #If the user decid
         waveform, sample_rate = torchaudio.load(wav_path)
 
         #Common Voice is usually 48kHz so we resample to 16kHz
-        waveform = self.resampler.forward(waveform.squeeze(0)).numpy()
+        waveform = self.resampler.forward(waveform.squeeze(0))
          
        
         return waveform, utterance
