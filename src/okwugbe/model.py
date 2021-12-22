@@ -161,7 +161,7 @@ class SpeechRecognitionModel(nn.Module):
 
         self.birnn_layers2_attention = nn.Sequential(*[
             BidirectionalGRU(rnn_dim=rnn_dim * 2 if i == 0 else rnn_dim * 4,
-                             hidden_size=rnn_dim, dropout=dropout, batch_first=True, num_layers=n_rnn_layers)
+                             hidden_size=rnn_dim, dropout=dropout, batch_first=True, num_layers=n_rnn_layers, with_attention=with_attention)
             for i in range(n_rnn)
         ])
 
