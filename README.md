@@ -10,6 +10,8 @@ The primary targets are African languages, but it supports other languages as we
 Here are the parameters for the package, as well as their default values
 | Parameter | Description | default | 
 | --- | --- | --- |
+| `use_common_voice` | Whether or not to use common voice | False |
+| `lang` | language to use from Common Voice. Must be specified if `use_common_voice` is set to True. | None |
 | `rnn_dim` | RNN Dimension & Hidden Size | 512 |
 | `num_layers` | Number of Layers | 1 |
 | `n_cnn` | Number of CNN components | 5 |
