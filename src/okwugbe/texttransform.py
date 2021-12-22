@@ -14,6 +14,7 @@ class TextTransform:
         with open(path, "r", encoding="utf-8") as fh:
             char_map_str = fh.read()
         chars_ = char_map_str.strip().split('\n')
+        self.chars = [c for c in chars]
         if chars_ == ['']:
             raise ValueError(
                 "Length of the unique characters set should be > 0. Expecting a .txt file with one character per line")
@@ -43,8 +44,9 @@ class TextTransform:
                 else:
                     ch = self.char_map[c]
             except KeyError:
-                print("Error for character `{}`in this sentence: {}".format(c, text))
+                print("Error for character `{}` in this sentence: {}".format(c, text))
                 print(self.char_map)
+                print(self.chars)
                 exit(1)
                 ch = 0
             int_sequence.append(ch)
