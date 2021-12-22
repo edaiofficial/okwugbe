@@ -1,4 +1,5 @@
 import unicodedata
+import sys
 
 accent_code = [b'\\u0301', b'\\u0300', b'\\u0306', b'\\u0308', b'\\u0303']
 alpha = {'ɔ': 0, 'ɛ': 5}
@@ -47,7 +48,7 @@ class TextTransform:
                 print("Error for character `{}` in this sentence: {}".format(c, text))
                 print(self.char_map)
                 print(self.chars)
-                exit(1)
+                sys.exit(1)
                 ch = 0
             int_sequence.append(ch)
         return int_sequence
