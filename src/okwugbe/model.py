@@ -194,9 +194,11 @@ class SpeechRecognitionModel(nn.Module):
         x = self.birnn_layers1(x).to(device)
 
         if self.with_attention:
+            print('Here')
             x = self.birnn_layers2_attention(x).to(device)
             x = self.classifier_attention(x)
         else:
+            print('Here1')
             x = self.birnn_layers2(x).to(device)
             x = self.classifier(x)
         return x
