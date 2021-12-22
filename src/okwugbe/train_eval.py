@@ -94,21 +94,12 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
 
         optimizer.zero_grad()
         output = model(spectrograms)  # (batch, time, n_class)
-        print('Checking for output: ',output.isnan().any())
-        print('before softmax ',output.shape)
         output = F.log_softmax(output, dim=2)
-        print('after softmax ',output.shape)
-        print('after softmax: ',output.isnan().any())
         output = output.transpose(0, 1)  # (time, batch, n_class)
-        print(output.shape)
         loss = criterion(output, labels, input_lengths, label_lengths)
-        print('Checking loss: ',loss.isnan().any())
         loss.backward()
-        print('='*25)
-        print('backward successful')
 
-
-        torch.nn.utils.clip_grad_norm_(model.parameters(), clipping_value)
+        #torch.nn.utils.clip_grad_norm_(model.parameters(), clipping_value)
         # used if grad accumulation is used
         # This is the idea of grad accumulation to overcome memory issue
         if grad_acc:
