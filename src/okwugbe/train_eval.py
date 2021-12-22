@@ -1,16 +1,19 @@
-import argparse
+# https://test.pypi.org/project/okwugbe/0.0.1/
+# https://pypi.org/project/okwugbe/0.0.1/
+
+
 import os
-from model import SpeechRecognitionModel
+from okwugbe.model import SpeechRecognitionModel
 import torch
 import torch.nn as nn
 from torch import optim
 import torch.nn.functional as F
-from metrics import Metrics
-from decoder import Decoders
-from texttransform import TextTransform
-from okwugbe_asr import OkwugbeDataset
-from process import process
-from earlystopping import EarlyStopping
+from okwugbe.metrics import Metrics
+from okwugbe.decoder import Decoders
+from okwugbe.texttransform import TextTransform
+from okwugbe.okwugbe_asr import OkwugbeDataset
+from okwugbe.process import process
+from okwugbe.earlystopping import EarlyStopping
 import colorama
 import numpy as np
 
@@ -169,7 +172,6 @@ def test(model, device, test_loader, criterion, text_transform):
 
             for j in range(len(decoded_preds)):
                 print("Decoding Speech's Content")
-                print("Audio's Transcription: {}".format(decoded_preds[j]))
                 test_cer.append(metrics.cer(decoded_targets[j], decoded_preds[j]))
                 test_wer.append(metrics.wer(decoded_targets[j], decoded_preds[j]))
                 current_prediction = "Decoded target: {}\nDecoded prediction: {}\n".format(decoded_targets[j],
