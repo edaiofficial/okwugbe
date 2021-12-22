@@ -29,6 +29,15 @@ class TextTransform:
             self.char_map[char] = int(index)
             self.index_map[int(index)] = char
 
+        #For the blank
+        self.blank_index =  int(len(all_chars)) #Setting BLANK to last class.
+        self.char_map[''] = self.blank_index
+        self.index_map[self.blank_index] = ''
+
+
+    def get_blank_index(self):
+        return self.blank_index
+
     def text_to_int(self, text):
         """ Use a character map and convert text to an integer sequence """
         int_sequence = []

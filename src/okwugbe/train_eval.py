@@ -268,7 +268,7 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
     if optimizer.lower() not in ['adamw', 'sgd', 'adam']:
         raise ValueError("Current optimizers supported: ['adamw', 'sgd', 'adam']")
 
-    criterion = nn.CTCLoss(blank=n_class - 1, zero_infinity=True).to(device)
+    criterion = nn.CTCLoss(blank=text_transform.get_blank_index(), zero_infinity=True).to(device)
 
     scheduler = optim.lr_scheduler.OneCycleLR(optimizer_, max_lr=hparams['learning_rate'],
                                               steps_per_epoch=int(len(train_loader)),
