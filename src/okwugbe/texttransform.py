@@ -20,7 +20,7 @@ class TextTransform:
             raise ValueError(
                 "Length of the unique characters set should be > 0. Expecting a .txt file with one character per line")
 
-        all_chars = special_chars + chars_
+        all_chars = [c for c in special_chars if c not in chars_]  + chars_
         self.chars = [c for c in all_chars]
         self.char_map = {}
         self.index_map = {}
@@ -41,7 +41,7 @@ class TextTransform:
             try:
                 if c == ' ':
                     ch = self.char_map['<SPACE>']
-                elif c == '̀':
+                elif c == '':
                     ch = 0
                 else:
                     ch = self.char_map[c]
