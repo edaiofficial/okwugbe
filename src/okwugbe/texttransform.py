@@ -37,7 +37,8 @@ class TextTransform:
         """ Use a character map and convert text to an integer sequence """
         int_sequence = []
         text = unicodedata.normalize("NFC", text)
-        for c in self.get_better_mapping(text):
+        #for c in self.get_better_mapping(text):
+        for c in text:
             try:
                 if c == ' ':
                     ch = self.char_map['<SPACE>']

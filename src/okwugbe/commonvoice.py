@@ -31,10 +31,10 @@ def generate_character_set(lang):
             file_.write(char)
             file_.write('\n')
     print(f'Characters for {lang} have been saved in {file_path} and will be used for current training. \n Please edit this file and add more characters in order to have a more robust model.')
-    print(get_better_mapping(chars))
+   
     return file_path 
 
-
+#This is only for debugging
 def get_better_mapping(text):
     t_arr = [t for t in text]
     s = []
