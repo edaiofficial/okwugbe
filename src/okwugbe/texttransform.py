@@ -43,7 +43,9 @@ class TextTransform:
                 else:
                     ch = self.char_map[c]
             except KeyError:
-                print("Error for character {} in this sentence: {}".format(c, text))
+                print("Error for character `{}`in this sentence: {}".format(c, text))
+                print(self.char_map)
+                exit(1)
                 ch = 0
             int_sequence.append(ch)
         return int_sequence
