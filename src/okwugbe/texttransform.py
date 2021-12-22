@@ -11,7 +11,7 @@ class TextTransform:
     """Maps characters to integers and vice versa"""
 
     def __init__(self, path):
-        special_chars = ["","'", " ", ".", ","]
+        special_chars = ["'", " ", ".", ","]
         with open(path, "r", encoding="utf-8") as fh:
             char_map_str = fh.read()
         chars_ = char_map_str.strip().split('\n')
@@ -37,15 +37,11 @@ class TextTransform:
         track=''
         for c in text:
             try:
-               
                 ch = self.char_map[c]
                 track+=c    
             except KeyError:
                 print("Error for character `{}` in this sentence: {}".format(c, text))
-                print(self.char_map)
-                print(self.chars)
-                print(f'Track: `{track}`')
-                sys.exit(1)
+              
                 ch = 0
             int_sequence.append(ch)
         return int_sequence
