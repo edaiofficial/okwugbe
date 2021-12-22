@@ -3,12 +3,6 @@ import os
 from datasets import load_dataset
 
 
-
-
-
-
-
-
 def generate_character_set(lang):
     try:
         dataset = load_dataset("common_voice", lang)

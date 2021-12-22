@@ -111,10 +111,10 @@ supported_languages_of_common_voice = {
 * Add automatic building of character set (this has been done in `commonvoice.py`)
 ## Tutorial
 - Here's a [Colab tutorial](https://colab.research.google.com/drive/1bZxd7yBOHlqIJBBUUImh8vwF4Zn_A7a5?usp=sharing) on using OkwuGbe
-- Here's a [Colab tutorial](https://colab.research.google.com/drive/12XiQCuQzOr7lye2sFCvsn4Ch_DNevx4u?usp=sharing) on using OkwuGbe with `Common Voice` 
+- Here's a [Colab tutorial](https://colab.research.google.com/drive/12XiQCuQzOr7lye2sFCvsn4Ch_DNevx4u?usp=sharing) on using OkwuGbe with Common Voice 
 
 ## ASR Data for African languages
-Wondering where to find dataset for your African language. Here are some resources to check:
+Wondering where to find dataset for your African language? Here are some resources to check:
 - [OpenSLR](https://www.openslr.org/resources.php)
 - [Mozilla Common Voice](https://commonvoice.mozilla.org/en/datasets)
 ## Citation

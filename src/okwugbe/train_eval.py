@@ -81,6 +81,8 @@ def valid(model, device, test_loader, criterion, iter_meter, experiment, text_tr
 
 def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, iter_meter, experiment, valid_loader,
           best_wer, model_path, text_transform, early_stopping, batch_multiplier=1, grad_acc=False):
+    
+    clipping_value = 5 # Default value
     model.train()
     data_len = len(train_loader.dataset)
     train_loss = 0
@@ -95,7 +97,9 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
         output = F.log_softmax(output, dim=2)
         output = output.transpose(0, 1)  # (time, batch, n_class)
         loss = criterion(output, labels, input_lengths, label_lengths)
+        loss.backward()
 
+        torch.nn.utils.clip_grad_norm_(model.parameters(), clipping_value)
         # used if grad accumulation is used
         # This is the idea of grad accumulation to overcome memory issue
         if grad_acc:
@@ -112,12 +116,10 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
         else:
             train_loss += loss.item() / len(train_loader)
 
-        loss.backward()
-        clipping_value = 5 # Default value
-        torch.nn.utils.clip_grad_norm(model.parameters(), clipping_value)
-        optimizer.step()
-        scheduler.step()
-        iter_meter.step()
+  
+            optimizer.step()
+            scheduler.step()
+            iter_meter.step()
 
         if batch_idx % 5 == 0 or batch_idx == data_len:
             text = 'Train Epoch {}: [{}/{} ({:.0f}%)] - Loss: {:.6f}'.format(epoch, batch_idx * len(spectrograms),
@@ -301,7 +303,7 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
 class Train_Okwugbe:
     def __init__(self, train_path=None, test_path=None,lang=None,use_common_voice=False, characters_set=None, n_cnn=5, n_rnn=3, rnn_dim=512, num_layers=1, n_feats=128,
                  in_channels=1, out_channels=32, kernel=3, stride=2, padding=1, dropout=0.1, with_attention=False,
-                 batch_multiplier=1, grad_acc=False, model_path='okwugbe_model', learning_rate=3e-5, batch_size=20,
+                 batch_multiplier=1, grad_acc=False, model_path='okwugbe_model', learning_rate=3e-5, batch_size=80,
                  patience=20, epochs=500, optimizer='adamw', validation_size=0.2):
         if use_common_voice==True and lang==None:
             raise Exception(f'`lang` (language from Common Voice) must be specified if use_common_voice is set to True.')
@@ -329,6 +331,7 @@ class Train_Okwugbe:
         self.batch_multiplier = batch_multiplier
         self.grad_acc = grad_acc
         self.model_path = model_path
+        self.model_path = self.model_path+'_'+lang if lang!=None else self.model_path
         self.learning_rate = learning_rate
         self.batch_size = batch_size
         self.patience = patience
