@@ -1,4 +1,4 @@
-## Okwugbe
+## ASR wiht Okwugbe
 
 With Okwugbe, many of the main features for a good ASR model on a low-resource language have been implememnted for You.
 Some of them are:
@@ -35,7 +35,6 @@ After training (and possibly tweaking the parameters to see if you can get bette
 - Link to your model checkpoints (if possible). 
 
 ##### :four: Gifts
-Exciting gifts(:tshirt:,:trophy:,:book:) await successful participants of the marathon! We will contact you via your email to send you the gifts in a while.
 
 The most exciting gift though is practical experience with training an ASR model on a low-resource language :smile:! 
 
