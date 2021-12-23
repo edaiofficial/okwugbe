@@ -1,18 +1,13 @@
-## ASR with Okwugbe
-
-With Okwugbe, many of the main features for a good ASR model on a low-resource language have been implememnted for You.
-Some of them are:
-- speech augmentation using the `time_mask` and `freq_mask` default parameters.
-- gradient accumulation which can be activated with `grad_acc=True` and setting `batch_multiplier` to your choice or using the default ones.
-
-
 ## :runner: Training an ASR model on a low-resource language with Okwugbe
-The aim of this fun project is to give you practical experience with training an ASR model on a low-resource language. The reality is that training ASR models on low-resource languages is more challenging than with high-resource languages. This is because end-to-end neural networks are data hungry. However, there are some techniques to help you squeeze out the best performance from your low-resource data....and Okwugbe offers all these.
+The aim of this fun project is to give you practical experience with training an ASR model on a low-resource language. The reality is that training ASR models on low-resource languages is more challenging than with high-resource languages. This is because end-to-end neural networks are data hungry. However, there are some techniques to help you squeeze out the best performance from your low-resource data....and Okwugbe offers all these. This project will enable you figure them out practically.
 
 For this marathon, You will need to do the following:
 
 #### :one: Choose any low-resource language of your choice. 
 - You can use any of the low-resource languages from Common Voice. Head over to `size_categories` of [this table](https://github.com/huggingface/datasets/tree/master/datasets/common_voice) to see the size of speech-text data in these languages. Low-resource encompasses those with `n<1K` or `1K<n<10K`.
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|ab|ar|as|br|ca|cnh|cs|cv|cy|de|dv|el|en|eo|es|et|eu|fa|fi|fr|fyNL|gaIE|hi|hsb|hu|ia|id|it|ja|ka|kab|ky|lg|lt|lv|mn|mt|nl|or|paIN|pl|pt|rmsursilv|rmvallader|ro|ru|rw|sah|sl|svSE|ta|th|tr|tt|uk|vi|vot|zhCN|zhHK|zhTW|
+|n<1K|10K<n<100K|n<1K|10K<n<100K|100K<n<1M|1K<n<10K|10K<n<100K|10K<n<100K|10K<n<100K|100K<n<1M|1K<n<10K|10K<n<100K|100K<n<1M|10K<n<100K|100K<n<1M|10K<n<100K|10K<n<100K|10K<n<100K|1K<n<10K|100K<n<1M|10K<n<100K|1K<n<10K|n<1K|1K<n<10K|1K<n<10K|1K<n<10K|10K<n<100K|100K<n<1M|1K<n<10K|1K<n<10K|100K<n<1M|10K<n<100K|1K<n<10K|1K<n<10K|1K<n<10K|1K<n<10K|10K<n<100K|10K<n<100K|1K<n<10K|1K<n<10K|10K<n<100K|10K<n<100K|1K<n<10K|1K<n<10K|1K<n<10K|10K<n<100K|100K<n<1M|1K<n<10K|1K<n<10K|1K<n<10K|10K<n<100K|10K<n<100K|1K<n<10K|10K<n<100K|10K<n<100K|1K<n<10K|n<1K|10K<n<100K|10K<n<100K|10K<n<100K|
 
 - Alternatively, you can use your own data.
 
@@ -21,8 +16,8 @@ For this marathon, You will need to do the following:
 - Make a copy of this Colab notebook to get started:[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/12XiQCuQzOr7lye2sFCvsn4Ch_DNevx4u?usp=sharing) 
 
 - The notebook above will guide you on training your low-resource language (from Common Voice) with OkwuGbe.  
-- Refer to the [Usage](https://github.com/chrisemezue/okwugbe#usage) section for the general guide.  
-- Try to experiment with some of the paramenters (like `n_feats`,`grad_acc`). Use [this table of parameters](https://github.com/chrisemezue/okwugbe#parameters) as a guide.
+- Refer to the [Usage](https://github.com/edaiofficial/okwugbe#usage) section for the general guide.  
+- Try to experiment with some of the paramenters (like `n_feats`,`grad_acc`). Use [this table of parameters](https://github.com/edaiofficial/okwugbe#parameters) as a guide.
 
 #### :three: Documenting your experience    
 
