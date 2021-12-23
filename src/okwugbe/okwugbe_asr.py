@@ -126,7 +126,6 @@ class OkwugbeDatasetForCommonVoice(torch.utils.data.Dataset): #If the user decid
 
         #Common Voice is usually 48kHz so we resample to 16kHz
         waveform = self.resampler.forward(waveform.squeeze(0))
-         
        
         return waveform, utterance,wav_path
 
