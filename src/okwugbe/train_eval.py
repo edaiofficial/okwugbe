@@ -288,10 +288,7 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
 
     iter_meter = IterMeter()
     best_wer = 1000
-    if display_plot:
-        liveloss = PlotLosses()
-    else:
-        liveloss=None    
+    liveloss = PlotLosses()
     
     if os.path.exists(model_path):
         checkpoint = torch.load(model_path, map_location='cpu')
