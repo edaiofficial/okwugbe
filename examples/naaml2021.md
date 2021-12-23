@@ -11,7 +11,7 @@ The aim of this fun project is to give you practical experience with training an
 
 For this marathon, You will need to do the following:
 
-#### `:one:` Choose any low-resource language of your choice. 
+### :one: Choose any low-resource language of your choice. 
 
     - You can use any of the low-resource languages from Common Voice. Use this table as a guide to know which languages are low-resource. 
     - Alternatively, you can use your own data.
