@@ -88,7 +88,7 @@ def valid(model, device, test_loader, criterion, iter_meter, experiment, text_tr
 
 
 def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, iter_meter, experiment, valid_loader,
-          best_wer, model_path, text_transform, early_stopping, liveloss,batch_multiplier=1, grad_acc=False,display_plot=True):
+          best_wer, model_path, text_transform, early_stopping, liveloss,batch_multiplier, grad_acc,display_plot):
     
     model.train()
     
@@ -134,8 +134,7 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
             if not display_plot:                                                                
             
                 text = 'Train Epoch {}: [{}/{} ({:.0f}%)] - Loss: {:.6f}'.format(epoch, batch_idx * len(spectrograms),
-                                                                                data_len,
-                                                                                100. * batch_idx / len(train_loader),
+                                                                                data_len,100. * batch_idx / len(train_loader),loss.item())
                 print(f"{YELLOW}{text}{RESET}")
 
     experiment['loss'].append((train_loss, iter_meter.get()))
@@ -304,17 +303,16 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
         for epoch in range(epoch_saved + 1, epochs + 1):
             best_wer,experiment = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
                              experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,liveloss,
-                             batch_multiplier=batch_multiplier, grad_acc=grad_acc,display_plot=display_plot)
+                             batch_multiplier, grad_acc,display_plot)
     else:
         early_stopping = EarlyStopping(patience, model_path, None, np.Inf)
         for epoch in range(1, epochs + 1):
             best_wer,experiment = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
-                             experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,liveloss,
-                             batch_multiplier=batch_multiplier, grad_acc=grad_acc,display_plot=display_plot)
+                             experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,liveloss, batch_multiplier, grad_acc,display_plot)
 
     print("Evaluating on Test data\n")
     test(model, device, test_loader, criterion, text_transform)
-    return experiment
+    
 
 
 class Train_Okwugbe:
@@ -374,13 +372,9 @@ class Train_Okwugbe:
                                            self.in_channels, self.out_channels, self.kernel,
                                            self.stride, self.dropout, self.with_attention, self.num_layers)
 
-        self.logs =main(asr_model, self.train_path, self.test_path, self.validation_size, self.learning_rate, self.batch_size,
+        main(asr_model, self.train_path, self.test_path, self.validation_size, self.learning_rate, self.batch_size,
              self.epochs, self.experiment, self.n_cnn, self.n_rnn, self.model_path, self.rnn_dim, self.text_transform,
              self.batch_multiplier, self.grad_acc, self.n_class, self.n_feats,
              self.stride, self.dropout, self.optimizer, self.patience,self.common_voice,self.freq_mask,self.time_mask,self.display_plot)
 
-    #def plot_metrics(self):
-        #if self.logs is not None:
-            #Plot valid and train losses
-            #Plot WER
-            #Plot CER 
+   
