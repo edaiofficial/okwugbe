@@ -34,7 +34,7 @@ After training (and possibly tweaking the parameters to see if you can get bette
 - Insights: what you observed or learned during the project. It could be something about the performance of the ASR model on the test inference or some changes you noticed when you tweaked some parameters.
 - Link to your model checkpoints (if possible). 
 
-##### :four: Gifts
+##### :four: What You Gain
 
 The most exciting gift though is practical experience with training an ASR model on a low-resource language :smile:! 
 
