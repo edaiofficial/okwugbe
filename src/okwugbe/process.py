@@ -22,6 +22,7 @@ class process:
         labels = []
         input_lengths = []
         label_lengths = []
+        audio_paths = []
 
         for waveform, utterance,audio_path in data:
            
@@ -38,8 +39,9 @@ class process:
             labels.append(label)
             input_lengths.append(spec.shape[0] // 2)
             label_lengths.append(len(label))
+            audio_paths.append(audio_path)
 
         spectrograms = nn.utils.rnn.pad_sequence(spectrograms, batch_first=True).unsqueeze(1).transpose(2, 3)
         labels = nn.utils.rnn.pad_sequence(labels, batch_first=True)
 
-        return spectrograms, labels, input_lengths, label_lengths,audio_path
+        return spectrograms, labels, input_lengths, label_lengths,audio_paths

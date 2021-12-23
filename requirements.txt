@@ -2,3 +2,4 @@ torch
 torchaudio
 datasets==1.12.1
 colorama
+ipython

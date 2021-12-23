@@ -134,8 +134,6 @@ class OkwugbeDatasetForCommonVoice(torch.utils.data.Dataset): #If the user decid
         """Load the n-th sample from the dataset.
         Args:
             n (int): The index of the sample to be loaded
-        Returns:
-            tuple: ``(waveform, sample_rate, utterance)``
         """
         fileid = self.data[n]
         return self.load_audio_item(fileid)

@@ -19,7 +19,8 @@ from earlystopping import EarlyStopping
 import colorama
 import numpy as np
 from commonvoice import generate_character_set
-import IPython
+from IPython.display import Audio 
+from IPython.core.display import display
 
 # init the colorama module
 colorama.init()
@@ -165,7 +166,7 @@ def test(model, device, test_loader, criterion, text_transform):
     test_cer, test_wer = [], []
     with torch.no_grad():
         for i, _data in enumerate(test_loader):
-            spectrograms, labels, input_lengths, label_lengths,audio_file_path = _data
+            spectrograms, labels, input_lengths, label_lengths,audio_file_paths = _data
             spectrograms, labels = spectrograms.to(device), labels.to(device)
 
             output = model(spectrograms)  # (batch, time, n_class)
@@ -180,7 +181,8 @@ def test(model, device, test_loader, criterion, text_transform):
 
             for j in range(len(decoded_preds)):
                 print("Decoding Speech's Content")
-                IPython.display.Audio(audio_file_path)
+                print(f'AUDIO PATH: {audio_file_paths[j]}')
+                display(Audio(str(audio_file_paths[j])))
                 test_cer.append(metrics.cer(decoded_targets[j], decoded_preds[j]))
                 test_wer.append(metrics.wer(decoded_targets[j], decoded_preds[j]))
                 current_prediction = "Decoded target: {}\nDecoded prediction: {}\n".format(decoded_targets[j],
