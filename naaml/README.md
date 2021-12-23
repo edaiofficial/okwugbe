@@ -21,6 +21,7 @@ For this marathon, You will need to:
 4. After done with training (and possibly tweaking the parameters to see if you can get better metrics), then go to [this Spreadsheet](https://docs.google.com/spreadsheets/d/1LiwbLSaNa9uwAJOb1Cag-IT9iNWt0BA0HLRlscMEPis/edit?usp=sharing) and put your details:
     - Name
     - Email
-    - Link to Colab
+    - Link to your Colab
     - Insights: what you observed or learned during the project. It could be something about the performance of the ASR model on the test inference or some changes you noticed when you tweaked some parameters.
+    - Link to your model checkpoints (if possible). 
     
