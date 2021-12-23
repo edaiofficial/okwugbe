@@ -21,6 +21,7 @@ import numpy as np
 from commonvoice import generate_character_set
 from IPython.display import Audio 
 from IPython.core.display import display
+from livelossplot import PlotLosses
 
 # init the colorama module
 colorama.init()
@@ -83,14 +84,14 @@ def valid(model, device, test_loader, criterion, iter_meter, experiment, text_tr
                                                                                                        avg_cer,
                                                                                                        avg_wer)
     print(f"{GREEN}{valid_text}{RESET}")
-    return avg_wer
+    return avg_wer,experiment
 
 
 def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, iter_meter, experiment, valid_loader,
           best_wer, model_path, text_transform, early_stopping, batch_multiplier=1, grad_acc=False):
     
-    clipping_value = 5 # Default value
     model.train()
+    liveloss = PlotLosses()
     data_len = len(train_loader.dataset)
     train_loss = 0
     batch_train_loss = 0
@@ -136,7 +137,10 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
             print(f"{YELLOW}{text}{RESET}")
 
     experiment['loss'].append((train_loss, iter_meter.get()))
-    val_wer = valid(model, device, valid_loader, criterion, iter_meter, experiment, text_transform, epoch)  # wer
+    val_wer,experiment = valid(model, device, valid_loader, criterion, iter_meter, experiment, text_transform, epoch)  # wer
+    logs = {'loss': experiment['loss'][-1][0], 'val_loss': experiment['val_loss'][-1][0], 'cer':experiment['cer'][-1][0], 'wer': experiment['wer'][-1][0]}
+    liveloss.update({'acc': 0.7, 'val_acc': 0.4, 'loss': 0.9, 'val_loss': 1.1})
+    liveloss.send()
 
     for i in range(1):  # Just to enable the 'break statement' - this will run once like a simple if/else statement
         early_stopping(val_wer, model, model_path)
@@ -155,7 +159,7 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
     else:
         print("No improvement in validation according to WER")
 
-    return best_wer
+    return best_wer,experiment
 
 
 def test(model, device, test_loader, criterion, text_transform):
@@ -293,18 +297,19 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
         print("Training resumed from epoch {} with best WER == {}".format(epoch_saved + 1, best_wer))
         early_stopping = EarlyStopping(patience, model_path, best_wer, best_wer)
         for epoch in range(epoch_saved + 1, epochs + 1):
-            best_wer = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
+            best_wer,experiment = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
                              experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,
                              batch_multiplier=batch_multiplier, grad_acc=grad_acc)
     else:
         early_stopping = EarlyStopping(patience, model_path, None, np.Inf)
         for epoch in range(1, epochs + 1):
-            best_wer = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
+            best_wer,experiment = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
                              experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,
                              batch_multiplier=batch_multiplier, grad_acc=grad_acc)
 
     print("Evaluating on Test data\n")
     test(model, device, test_loader, criterion, text_transform)
+    return experiment
 
 
 class Train_Okwugbe:
@@ -355,12 +360,21 @@ class Train_Okwugbe:
         self.freq_mask = freq_mask
         self.time_mask = time_mask
 
+        #Log the losses and metrics
+        self.logs=None
+
     def run(self):
         asr_model = SpeechRecognitionModel(self.n_cnn, self.n_rnn, self.rnn_dim, self.n_class, self.n_feats,
                                            self.in_channels, self.out_channels, self.kernel,
                                            self.stride, self.dropout, self.with_attention, self.num_layers)
 
-        main(asr_model, self.train_path, self.test_path, self.validation_size, self.learning_rate, self.batch_size,
+        self.logs =main(asr_model, self.train_path, self.test_path, self.validation_size, self.learning_rate, self.batch_size,
              self.epochs, self.experiment, self.n_cnn, self.n_rnn, self.model_path, self.rnn_dim, self.text_transform,
              self.batch_multiplier, self.grad_acc, self.n_class, self.n_feats,
              self.stride, self.dropout, self.optimizer, self.patience,self.common_voice,self.freq_mask,self.time_mask)
+
+    def plot_metrics(self):
+        if self.logs is not None:
+            #Plot valid and train losses
+            #Plot WER
+            #Plot CER 
