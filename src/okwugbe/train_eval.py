@@ -19,6 +19,7 @@ from earlystopping import EarlyStopping
 import colorama
 import numpy as np
 from commonvoice import generate_character_set
+import IPython
 
 # init the colorama module
 colorama.init()
@@ -55,7 +56,7 @@ def valid(model, device, test_loader, criterion, iter_meter, experiment, text_tr
 
     with torch.no_grad():
         for i, _data in enumerate(test_loader):
-            spectrograms, labels, input_lengths, label_lengths = _data
+            spectrograms, labels, input_lengths, label_lengths,_ = _data
             spectrograms, labels = spectrograms.to(device), labels.to(device)
 
             output = model(spectrograms)  # (batch, time, n_class)
@@ -94,7 +95,7 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
     batch_train_loss = 0
     print('Epoch {} ~ Training started'.format(epoch))
     for batch_idx, _data in enumerate(train_loader):
-        spectrograms, labels, input_lengths, label_lengths = _data
+        spectrograms, labels, input_lengths, label_lengths,_ = _data
         spectrograms, labels = spectrograms.to(device), labels.to(device)
 
         optimizer.zero_grad()
@@ -164,7 +165,7 @@ def test(model, device, test_loader, criterion, text_transform):
     test_cer, test_wer = [], []
     with torch.no_grad():
         for i, _data in enumerate(test_loader):
-            spectrograms, labels, input_lengths, label_lengths = _data
+            spectrograms, labels, input_lengths, label_lengths,audio_file_path = _data
             spectrograms, labels = spectrograms.to(device), labels.to(device)
 
             output = model(spectrograms)  # (batch, time, n_class)
@@ -179,6 +180,7 @@ def test(model, device, test_loader, criterion, text_transform):
 
             for j in range(len(decoded_preds)):
                 print("Decoding Speech's Content")
+                IPython.display.Audio(audio_file_path)
                 test_cer.append(metrics.cer(decoded_targets[j], decoded_preds[j]))
                 test_wer.append(metrics.wer(decoded_targets[j], decoded_preds[j]))
                 current_prediction = "Decoded target: {}\nDecoded prediction: {}\n".format(decoded_targets[j],
@@ -193,9 +195,8 @@ def test(model, device, test_loader, criterion, text_transform):
 
 
 def main(model, train_path, test_path, validation_size, learning_rate, batch_size, epochs, experiment, cnn_layer,
-         rnn_layer,
-         model_path, rnn_dim, text_transform, batch_multiplier, grad_acc, n_class, n_feats, stride, dropout, optimizer,
-         patience,common_voice):
+         rnn_layer,model_path, rnn_dim, text_transform, batch_multiplier, grad_acc, n_class, n_feats, stride, dropout, optimizer,
+         patience,common_voice,freq_mask,time_mask):
     if grad_acc:
         batch_size = batch_size // batch_multiplier
 
@@ -238,18 +239,18 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                                batch_size=hparams['batch_size'],
                                                shuffle=True,
-                                               collate_fn=lambda x: process.data_processing(x, text_transform, 'train'),
+                                               collate_fn=lambda x: process.data_processing(x, text_transform, 'train',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask),
                                                **kwargs)
     valid_loader = torch.utils.data.DataLoader(dataset=valid_dataset,
                                                batch_size=hparams['batch_size'],
                                                shuffle=False,
-                                               collate_fn=lambda x: process.data_processing(x, text_transform, 'valid'),
+                                               collate_fn=lambda x: process.data_processing(x, text_transform, 'valid',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask),
                                                **kwargs)
 
     test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                               batch_size=hparams['batch_size'],
                                               shuffle=False,
-                                              collate_fn=lambda x: process.data_processing(x, text_transform, 'test'),
+                                              collate_fn=lambda x: process.data_processing(x, text_transform, 'test',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask),
                                               **kwargs)
 
     model = model.to(device)
@@ -309,7 +310,7 @@ class Train_Okwugbe:
     def __init__(self, train_path=None, test_path=None,characters_set=None, n_cnn=5, n_rnn=3, rnn_dim=512, num_layers=1, n_feats=128,
                  in_channels=1, out_channels=32, kernel=3, stride=2, padding=1, dropout=0.1, with_attention=False,
                  batch_multiplier=1, grad_acc=False, model_path='okwugbe_model', learning_rate=3e-5, batch_size=80,
-                 patience=20, epochs=500, optimizer='adamw', validation_size=0.2,lang=None,use_common_voice=False):
+                 patience=20, epochs=500, optimizer='adamw', validation_size=0.2,lang=None,use_common_voice=False,freq_mask=30,time_mask=100):
         if use_common_voice==True and lang==None:
             raise Exception(f'`lang` (language from Common Voice) must be specified if use_common_voice is set to True.')
         self.common_voice = {'use_common_voice':use_common_voice,'lang':lang}    
@@ -349,6 +350,10 @@ class Train_Okwugbe:
         self.n_class = self.text_transform.get_num_classes()
         self.experiment = {'loss': [], 'val_loss': [], 'cer': [], 'wer': []}
 
+        #Speech augmentation
+        self.freq_mask = freq_mask
+        self.time_mask = time_mask
+
     def run(self):
         asr_model = SpeechRecognitionModel(self.n_cnn, self.n_rnn, self.rnn_dim, self.n_class, self.n_feats,
                                            self.in_channels, self.out_channels, self.kernel,
@@ -357,4 +362,4 @@ class Train_Okwugbe:
         main(asr_model, self.train_path, self.test_path, self.validation_size, self.learning_rate, self.batch_size,
              self.epochs, self.experiment, self.n_cnn, self.n_rnn, self.model_path, self.rnn_dim, self.text_transform,
              self.batch_multiplier, self.grad_acc, self.n_class, self.n_feats,
-             self.stride, self.dropout, self.optimizer, self.patience,self.common_voice)
+             self.stride, self.dropout, self.optimizer, self.patience,self.common_voice,self.freq_mask,self.time_mask)

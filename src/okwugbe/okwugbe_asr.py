@@ -49,7 +49,7 @@ class OkwugbeDataset(torch.utils.data.Dataset):
         utterance = d[1]
         wav_path = d[0]
         waveform, sample_rate = torchaudio.load(wav_path)
-        return waveform, utterance
+        return waveform, utterance,wav_path
 
     def __getitem__(self, n: int):
         """Load the n-th sample from the dataset.
@@ -128,7 +128,7 @@ class OkwugbeDatasetForCommonVoice(torch.utils.data.Dataset): #If the user decid
         waveform = self.resampler.forward(waveform.squeeze(0))
          
        
-        return waveform, utterance
+        return waveform, utterance,wav_path
 
     def __getitem__(self, n: int):
         """Load the n-th sample from the dataset.
