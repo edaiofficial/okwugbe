@@ -95,7 +95,8 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
     data_len = len(train_loader.dataset)
     train_loss = 0
     batch_train_loss = 0
-    print('Epoch {} ~ Training started'.format(epoch))
+    if not display_plot:
+        print('Epoch {} ~ Training started'.format(epoch))
     for batch_idx, _data in enumerate(train_loader):
         spectrograms, labels, input_lengths, label_lengths,_ = _data
         spectrograms, labels = spectrograms.to(device), labels.to(device)
@@ -130,11 +131,12 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
             iter_meter.step()
 
         if batch_idx % 5 == 0 or batch_idx == data_len:
-            text = 'Train Epoch {}: [{}/{} ({:.0f}%)] - Loss: {:.6f}'.format(epoch, batch_idx * len(spectrograms),
-                                                                             data_len,
-                                                                             100. * batch_idx / len(train_loader),
-                                                                             loss.item())
-            print(f"{YELLOW}{text}{RESET}")
+            if not display_plot:                                                                
+            
+                text = 'Train Epoch {}: [{}/{} ({:.0f}%)] - Loss: {:.6f}'.format(epoch, batch_idx * len(spectrograms),
+                                                                                data_len,
+                                                                                100. * batch_idx / len(train_loader),
+                print(f"{YELLOW}{text}{RESET}")
 
     experiment['loss'].append((train_loss, iter_meter.get()))
     val_wer,experiment = valid(model, device, valid_loader, criterion, iter_meter, experiment, text_transform, epoch)  # wer
@@ -158,7 +160,8 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
             'best_wer': best_wer
         }, model_path)
     else:
-        print("No improvement in validation according to WER")
+        if not display_plot:
+            print("No improvement in validation according to WER")
 
     return best_wer,experiment
 
@@ -180,8 +183,7 @@ def test(model, device, test_loader, criterion, text_transform):
             loss = criterion(output, labels, input_lengths, label_lengths)
             test_loss += loss.item() / len(test_loader)
 
-            decoded_preds, decoded_targets = decoders.greedy_decoder(text_transform, output.transpose(0, 1), labels,
-                                                                     label_lengths)
+            decoded_preds, decoded_targets = decoders.greedy_decoder(text_transform, output.transpose(0, 1), labels,label_lengths)
 
             for j in range(len(decoded_preds)):
                 print("Decoding Speech's Content")
@@ -288,6 +290,7 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
 
     iter_meter = IterMeter()
     best_wer = 1000
+    
     liveloss = PlotLosses()
     
     if os.path.exists(model_path):

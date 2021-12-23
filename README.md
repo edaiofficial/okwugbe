@@ -2,12 +2,14 @@
 Automatic Speech Recognition Library for (low-resource) African Languages
 
 
-## Context
+## Motivation
 Our aim is to foster ASR for African languages by making the whole process--from dataset gathering and preprocessing to training--as easy as possible. This library follows our work [Okwugbé](https://arxiv.org/abs/2103.07762) on ASR for Fon and Igbo. Based on the architecture of the network described in our
 paper, it aims at easing the training process of ASR for other languages.
 The primary targets are African languages, but it supports other languages as well
 ## Parameters
-Here are the parameters for the package, as well as their default values
+Here are the parameters for the package, as well as their default values.
+
+The defualt valuse have been chosen so that you only have to make minimal changes to get a good ASR model going.
 | Parameter | Description | default | 
 | --- | --- | --- |
 | `use_common_voice` | Whether or not to use common voice | False |
@@ -36,6 +38,9 @@ Here are the parameters for the package, as well as their default values
 | `patience` | Early Stopping Patience | 20 |
 | `epochs` | Training epochs | 500 |
 | `optimizer` | Optimizer | 'adamw' |
+|`freq_mask`|frequency masking (for speech augmentation)|30|
+|`time_mask`| time masking (for speech augmentation) | 100 |
+|`display_plot`| whether or not to display love plot during training| True|
 
 ## Usage
 ```pip install okwugbe```
@@ -61,7 +66,14 @@ train.run()
 ```
 ## Integration with Common Voicee
 You easily train on [Common Voice](https://commonvoice.mozilla.org/en) data set with Okwugbe by specifying `use_common_voice=True` and setting `lang` to the language code of your choice. This language must be hosted on Common Voice.
+```python
+#Initialize the trainer instance
+train = Train_Okwugbe(use_common_voice=True, lang='mn') # for mongolian
 
+#Start the training
+train.run()
+```
+Here are the list of our current supported languages in Common Voice.
 ```bash
 supported_languages_of_common_voice = {
             "tatar": "tt",
@@ -117,6 +129,7 @@ supported_languages_of_common_voice = {
 Wondering where to find dataset for your African language? Here are some resources to check:
 - [OpenSLR](https://www.openslr.org/resources.php)
 - [Mozilla Common Voice](https://commonvoice.mozilla.org/en/datasets)
+
 ## Citation
 Please cite our paper using the citation below if you use our work in anyway:
 
