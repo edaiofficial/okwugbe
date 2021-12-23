@@ -1,4 +1,4 @@
-## Training an ASR model on a low-resource language with Okwugbe
+## :runner: Training an ASR model on a low-resource language with Okwugbe
 
 With Okwugbe, many of the main features for a good ASR model on a low-resource language have been implememnted for You.
 Some of them are:
