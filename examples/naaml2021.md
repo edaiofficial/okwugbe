@@ -14,11 +14,16 @@ The aim of this fun project is to give you practical experience with training an
 
 For this marathon, You will need to:
 
-1. Choose any low-resource language of your choice. You can use any of the low-resource languages from Common Voice. Use this table as a guide to know which languages are low-resource. Alternatively, you can use your own data.
-2. Train with OkwuGbe.
-    Make a copy of this Colab notebook to get started:[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1DujjQPbMjmoh3xwJJStD5VvXN1GwZQNl?usp=sharing) 
-3. The notebook above will guide you on training your low-resource language with OkwuGbe.   
-4. After done with training (and possibly tweaking the parameters to see if you can get better metrics), then go to this [![Google Spreadsheet](https://upload.wikimedia.org/wikipedia/commons/3/30/Google_Sheets_logo_%282014-2020%29.svg)](https://docs.google.com/spreadsheets/d/1LiwbLSaNa9uwAJOb1Cag-IT9iNWt0BA0HLRlscMEPis/edit?usp=sharing) and put your details:
+#### :one: Choose any low-resource language of your choice. 
+    - You can use any of the low-resource languages from Common Voice. Use this table as a guide to know which languages are low-resource. 
+    - Alternatively, you can use your own data.
+#### :two: Training with OkwuGbe.
+    - Make a copy of this Colab notebook to get started:[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1DujjQPbMjmoh3xwJJStD5VvXN1GwZQNl?usp=sharing) 
+    
+    - The notebook above will guide you on training your low-resource language with OkwuGbe.   
+    -Try to experiment with some of the paramenters (like `n_feats`,`grad_acc`). Use [this table of parameters](https://github.com/chrisemezue/okwugbe#parameters) as a guide.
+#### :three: Logging your experience    
+After training (and possibly tweaking the parameters to see if you can get better metrics), then go here  to this [![Google Spreadsheet](https://upload.wikimedia.org/wikipedia/commons/3/30/Google_Sheets_logo_%282014-2020%29.svg)](https://docs.google.com/spreadsheets/d/1LiwbLSaNa9uwAJOb1Cag-IT9iNWt0BA0HLRlscMEPis/edit?usp=sharing) and put your details:
     - Name
     - Email
     - Link to your Colab
