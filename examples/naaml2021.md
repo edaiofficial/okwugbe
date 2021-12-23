@@ -31,3 +31,12 @@ After training (and possibly tweaking the parameters to see if you can get bette
 - Link to your Colab
 - Insights: what you observed or learned during the project. It could be something about the performance of the ASR model on the test inference or some changes you noticed when you tweaked some parameters.
 - Link to your model checkpoints (if possible). 
+
+##### :four: Gifts
+Exciting gifts await the participants of the marathon!
+We will contact you via your email to send you the gifts in a while.
+
+______
+If you liked using the Okwugbe platform, please give it a star on Github.
+
+If there are some bugs you encountered or features you think will benefit ASR for low-resource languages, please do reach out to us. You can create a Github issue.
