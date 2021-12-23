@@ -35,7 +35,7 @@ After training (and possibly tweaking the parameters to see if you can get bette
 - Link to your model checkpoints (if possible). 
 
 ##### :four: Gifts
-Exciting gifts await the participants of the marathon!
+Exciting gifts(:tshirt:,:trophy:,:book:) await successful participants of the marathon!
 We will contact you via your email to send you the gifts in a while.
 
 ##### :five: Contact for enquiries
