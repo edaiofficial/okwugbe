@@ -5,7 +5,8 @@ class Decoders:
     def __init__(self):
         super(Decoders, self).__init__()
 
-    def greedy_decoder(self, text_transform, output, labels, label_lengths, blank_label=59, collapse_repeated=True):
+    def greedy_decoder(self, text_transform, output, labels, label_lengths, collapse_repeated=True):
+        blank_label = text_transform.get_blank_index()
         arg_maxes = torch.argmax(output, dim=2)
         decodes = []
         targets = []
