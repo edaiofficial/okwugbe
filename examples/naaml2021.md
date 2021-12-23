@@ -1,4 +1,4 @@
-## Training an ASR model on a low-resource language with Okwugbe
+## Okwugbe
 
 With Okwugbe, many of the main features for a good ASR model on a low-resource language have been implememnted for You.
 Some of them are:
@@ -6,7 +6,7 @@ Some of them are:
 - gradient accumulation which can be activated with `grad_acc=True` and setting `batch_multiplier` to your choice or using the default ones.
 
 
-## :runner: Training marathon for the Third Nepal Winter School in AI, 2021
+## :runner: Training an ASR model on a low-resource language with Okwugbe
 The aim of this fun project is to give you practical experience with training an ASR model on a low-resource language. The reality is that training ASR models on low-resource languages is more challenging than with high-resource languages. This is because end-to-end neural networks are data hungry. However, there are some techniques to help you squeeze out the best performance from your low-resource data....and Okwugbe offers all these.
 
 For this marathon, You will need to do the following:
