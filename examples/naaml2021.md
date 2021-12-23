@@ -18,9 +18,10 @@ For this marathon, You will need to do the following:
 
 #### :two: Training with OkwuGbe.
 
-- Make a copy of this Colab notebook to get started:[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1DujjQPbMjmoh3xwJJStD5VvXN1GwZQNl?usp=sharing) 
+- Make a copy of this Colab notebook to get started:[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/12XiQCuQzOr7lye2sFCvsn4Ch_DNevx4u?usp=sharing) 
 
-- The notebook above will guide you on training your low-resource language with OkwuGbe.   
+- The notebook above will guide you on training your low-resource language (from Common Voice) with OkwuGbe.  
+- Refer to the [Usage](https://github.com/chrisemezue/okwugbe#usage) section for the general guide.  
 - Try to experiment with some of the paramenters (like `n_feats`,`grad_acc`). Use [this table of parameters](https://github.com/chrisemezue/okwugbe#parameters) as a guide.
 
 #### :three: Documenting your experience    
@@ -37,6 +38,9 @@ After training (and possibly tweaking the parameters to see if you can get bette
 Exciting gifts await the participants of the marathon!
 We will contact you via your email to send you the gifts in a while.
 
+##### :five: Contact for enquiries
+
+In case of enquiries or issues, please contact chris.emezue@gmail.com or femipancrace.dossou@gmail.com  and we'll be sure to answer you in a jiffy!
 ______
 If you liked using the Okwugbe platform, please give it a star on Github.
 
