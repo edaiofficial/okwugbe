@@ -112,7 +112,7 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
         if grad_acc:
             print('Using Gradient Accumulation')
             train_loss += loss.item() / (len(train_loader) * batch_multiplier)
-            if (batch_idx + 1) % batch_multiplier == 0:
+            if (batch_idx + 1) % batch_multiplier ==0 or batch_idx == data_len :
                 optimizer.step()
                 scheduler.step()
                 iter_meter.step()
@@ -138,8 +138,7 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
     experiment['loss'].append((train_loss, iter_meter.get()))
     val_wer = valid(model, device, valid_loader, criterion, iter_meter, experiment, text_transform, epoch)  # wer
 
-    for i in range(
-            1):  # Just to enable the 'break statement' - this will run once like a simple if/else statement
+    for i in range(1):  # Just to enable the 'break statement' - this will run once like a simple if/else statement
         early_stopping(val_wer, model, model_path)
         if early_stopping.early_stop:
             print("Early stopping")
