@@ -19,9 +19,6 @@ from earlystopping import EarlyStopping
 import colorama
 import numpy as np
 from commonvoice import generate_character_set
-from IPython.display import Audio 
-from IPython.core.display import display
-from livelossplot import PlotLosses
 
 # init the colorama module
 colorama.init()
@@ -58,7 +55,7 @@ def valid(model, device, test_loader, criterion, iter_meter, experiment, text_tr
 
     with torch.no_grad():
         for i, _data in enumerate(test_loader):
-            spectrograms, labels, input_lengths, label_lengths,_ = _data
+            spectrograms, labels, input_lengths, label_lengths = _data
             spectrograms, labels = spectrograms.to(device), labels.to(device)
 
             output = model(spectrograms)  # (batch, time, n_class)
@@ -84,21 +81,20 @@ def valid(model, device, test_loader, criterion, iter_meter, experiment, text_tr
                                                                                                        avg_cer,
                                                                                                        avg_wer)
     print(f"{GREEN}{valid_text}{RESET}")
-    return avg_wer,experiment
+    return avg_wer
 
 
 def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, iter_meter, experiment, valid_loader,
-          best_wer, model_path, text_transform, early_stopping, liveloss,batch_multiplier=1, grad_acc=False,display_plot=True):
+          best_wer, model_path, text_transform, early_stopping, batch_multiplier=1, grad_acc=False):
     
+    clipping_value = 5 # Default value
     model.train()
-    
     data_len = len(train_loader.dataset)
     train_loss = 0
     batch_train_loss = 0
-    if not display_plot:
-        print('Epoch {} ~ Training started'.format(epoch))
+    print('Epoch {} ~ Training started'.format(epoch))
     for batch_idx, _data in enumerate(train_loader):
-        spectrograms, labels, input_lengths, label_lengths,_ = _data
+        spectrograms, labels, input_lengths, label_lengths = _data
         spectrograms, labels = spectrograms.to(device), labels.to(device)
 
         optimizer.zero_grad()
@@ -114,7 +110,7 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
         if grad_acc:
             print('Using Gradient Accumulation')
             train_loss += loss.item() / (len(train_loader) * batch_multiplier)
-            if (batch_idx + 1) % batch_multiplier ==0 or batch_idx == data_len :
+            if (batch_idx + 1) % batch_multiplier == 0:
                 optimizer.step()
                 scheduler.step()
                 iter_meter.step()
@@ -131,21 +127,17 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
             iter_meter.step()
 
         if batch_idx % 5 == 0 or batch_idx == data_len:
-            if not display_plot:                                                                
-            
-                text = 'Train Epoch {}: [{}/{} ({:.0f}%)] - Loss: {:.6f}'.format(epoch, batch_idx * len(spectrograms),
-                                                                                data_len,
-                                                                                100. * batch_idx / len(train_loader),
-                print(f"{YELLOW}{text}{RESET}")
+            text = 'Train Epoch {}: [{}/{} ({:.0f}%)] - Loss: {:.6f}'.format(epoch, batch_idx * len(spectrograms),
+                                                                             data_len,
+                                                                             100. * batch_idx / len(train_loader),
+                                                                             loss.item())
+            print(f"{YELLOW}{text}{RESET}")
 
     experiment['loss'].append((train_loss, iter_meter.get()))
-    val_wer,experiment = valid(model, device, valid_loader, criterion, iter_meter, experiment, text_transform, epoch)  # wer
-    if display_plot:
-        logs = {'loss': experiment['loss'][-1][0], 'val_loss': experiment['val_loss'][-1][0], 'cer':experiment['cer'][-1][0], 'wer': experiment['wer'][-1][0]}
-        liveloss.update(logs)
-        liveloss.send()
+    val_wer = valid(model, device, valid_loader, criterion, iter_meter, experiment, text_transform, epoch)  # wer
 
-    for i in range(1):  # Just to enable the 'break statement' - this will run once like a simple if/else statement
+    for i in range(
+            1):  # Just to enable the 'break statement' - this will run once like a simple if/else statement
         early_stopping(val_wer, model, model_path)
         if early_stopping.early_stop:
             print("Early stopping")
@@ -160,10 +152,9 @@ def train(model, device, train_loader, criterion, optimizer, scheduler, epoch, i
             'best_wer': best_wer
         }, model_path)
     else:
-        if not display_plot:
-            print("No improvement in validation according to WER")
+        print("No improvement in validation according to WER")
 
-    return best_wer,experiment
+    return best_wer
 
 
 def test(model, device, test_loader, criterion, text_transform):
@@ -173,7 +164,7 @@ def test(model, device, test_loader, criterion, text_transform):
     test_cer, test_wer = [], []
     with torch.no_grad():
         for i, _data in enumerate(test_loader):
-            spectrograms, labels, input_lengths, label_lengths,audio_file_paths = _data
+            spectrograms, labels, input_lengths, label_lengths = _data
             spectrograms, labels = spectrograms.to(device), labels.to(device)
 
             output = model(spectrograms)  # (batch, time, n_class)
@@ -183,12 +174,11 @@ def test(model, device, test_loader, criterion, text_transform):
             loss = criterion(output, labels, input_lengths, label_lengths)
             test_loss += loss.item() / len(test_loader)
 
-            decoded_preds, decoded_targets = decoders.greedy_decoder(text_transform, output.transpose(0, 1), labels,label_lengths)
+            decoded_preds, decoded_targets = decoders.greedy_decoder(text_transform, output.transpose(0, 1), labels,
+                                                                     label_lengths)
 
             for j in range(len(decoded_preds)):
                 print("Decoding Speech's Content")
-                print(f'AUDIO PATH: {audio_file_paths[j]}')
-                display(Audio(str(audio_file_paths[j])))
                 test_cer.append(metrics.cer(decoded_targets[j], decoded_preds[j]))
                 test_wer.append(metrics.wer(decoded_targets[j], decoded_preds[j]))
                 current_prediction = "Decoded target: {}\nDecoded prediction: {}\n".format(decoded_targets[j],
@@ -203,8 +193,9 @@ def test(model, device, test_loader, criterion, text_transform):
 
 
 def main(model, train_path, test_path, validation_size, learning_rate, batch_size, epochs, experiment, cnn_layer,
-         rnn_layer,model_path, rnn_dim, text_transform, batch_multiplier, grad_acc, n_class, n_feats, stride, dropout, optimizer,
-         patience,common_voice,freq_mask,time_mask,display_plot):
+         rnn_layer,
+         model_path, rnn_dim, text_transform, batch_multiplier, grad_acc, n_class, n_feats, stride, dropout, optimizer,
+         patience,common_voice):
     if grad_acc:
         batch_size = batch_size // batch_multiplier
 
@@ -247,18 +238,18 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                                batch_size=hparams['batch_size'],
                                                shuffle=True,
-                                               collate_fn=lambda x: process.data_processing(x, text_transform, 'train',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask),
+                                               collate_fn=lambda x: process.data_processing(x, text_transform, 'train'),
                                                **kwargs)
     valid_loader = torch.utils.data.DataLoader(dataset=valid_dataset,
                                                batch_size=hparams['batch_size'],
                                                shuffle=False,
-                                               collate_fn=lambda x: process.data_processing(x, text_transform, 'valid',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask),
+                                               collate_fn=lambda x: process.data_processing(x, text_transform, 'valid'),
                                                **kwargs)
 
     test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                               batch_size=hparams['batch_size'],
                                               shuffle=False,
-                                              collate_fn=lambda x: process.data_processing(x, text_transform, 'test',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask),
+                                              collate_fn=lambda x: process.data_processing(x, text_transform, 'test'),
                                               **kwargs)
 
     model = model.to(device)
@@ -290,9 +281,7 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
 
     iter_meter = IterMeter()
     best_wer = 1000
-    
-    liveloss = PlotLosses()
-    
+
     if os.path.exists(model_path):
         checkpoint = torch.load(model_path, map_location='cpu')
         model.load_state_dict(checkpoint['model_state_dict'])
@@ -302,26 +291,25 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
         print("Training resumed from epoch {} with best WER == {}".format(epoch_saved + 1, best_wer))
         early_stopping = EarlyStopping(patience, model_path, best_wer, best_wer)
         for epoch in range(epoch_saved + 1, epochs + 1):
-            best_wer,experiment = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
-                             experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,liveloss,
-                             batch_multiplier=batch_multiplier, grad_acc=grad_acc,display_plot=display_plot)
+            best_wer = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
+                             experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,
+                             batch_multiplier=batch_multiplier, grad_acc=grad_acc)
     else:
         early_stopping = EarlyStopping(patience, model_path, None, np.Inf)
         for epoch in range(1, epochs + 1):
-            best_wer,experiment = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
-                             experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,liveloss,
-                             batch_multiplier=batch_multiplier, grad_acc=grad_acc,display_plot=display_plot)
+            best_wer = train(model, device, train_loader, criterion, optimizer_, scheduler, epoch, iter_meter,
+                             experiment, valid_loader, best_wer, model_path, text_transform, early_stopping,
+                             batch_multiplier=batch_multiplier, grad_acc=grad_acc)
 
     print("Evaluating on Test data\n")
     test(model, device, test_loader, criterion, text_transform)
-    return experiment
 
 
 class Train_Okwugbe:
     def __init__(self, train_path=None, test_path=None,characters_set=None, n_cnn=5, n_rnn=3, rnn_dim=512, num_layers=1, n_feats=128,
                  in_channels=1, out_channels=32, kernel=3, stride=2, padding=1, dropout=0.1, with_attention=False,
                  batch_multiplier=1, grad_acc=False, model_path='okwugbe_model', learning_rate=3e-5, batch_size=80,
-                 patience=20, epochs=500, optimizer='adamw', validation_size=0.2,lang=None,use_common_voice=False,freq_mask=30,time_mask=100,display_plot=True):
+                 patience=20, epochs=500, optimizer='adamw', validation_size=0.2,lang=None,use_common_voice=False):
         if use_common_voice==True and lang==None:
             raise Exception(f'`lang` (language from Common Voice) must be specified if use_common_voice is set to True.')
         self.common_voice = {'use_common_voice':use_common_voice,'lang':lang}    
@@ -361,26 +349,12 @@ class Train_Okwugbe:
         self.n_class = self.text_transform.get_num_classes()
         self.experiment = {'loss': [], 'val_loss': [], 'cer': [], 'wer': []}
 
-        #Speech augmentation
-        self.freq_mask = freq_mask
-        self.time_mask = time_mask
-
-        #Log the losses and metrics
-        self.logs=None
-        self.display_plot = display_plot
-
     def run(self):
         asr_model = SpeechRecognitionModel(self.n_cnn, self.n_rnn, self.rnn_dim, self.n_class, self.n_feats,
                                            self.in_channels, self.out_channels, self.kernel,
                                            self.stride, self.dropout, self.with_attention, self.num_layers)
 
-        self.logs =main(asr_model, self.train_path, self.test_path, self.validation_size, self.learning_rate, self.batch_size,
+        main(asr_model, self.train_path, self.test_path, self.validation_size, self.learning_rate, self.batch_size,
              self.epochs, self.experiment, self.n_cnn, self.n_rnn, self.model_path, self.rnn_dim, self.text_transform,
              self.batch_multiplier, self.grad_acc, self.n_class, self.n_feats,
-             self.stride, self.dropout, self.optimizer, self.patience,self.common_voice,self.freq_mask,self.time_mask,self.display_plot)
-
-    #def plot_metrics(self):
-        #if self.logs is not None:
-            #Plot valid and train losses
-            #Plot WER
-            #Plot CER 
+             self.stride, self.dropout, self.optimizer, self.patience,self.common_voice)

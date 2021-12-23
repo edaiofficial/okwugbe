@@ -1,6 +1,6 @@
 [build-system]
 requires = [
     "setuptools>=42",
-    "wheel", "numpy", "torch", "torchaudio","datasets==1.12.1","ipython"
+    "wheel", "numpy", "torch", "torchaudio","datasets==1.12.1"
 ]
 build-backend = "setuptools.build_meta"

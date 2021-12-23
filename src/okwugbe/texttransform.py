@@ -37,7 +37,7 @@ class TextTransform:
     def get_num_classes(self):
         return len(self.char_map)
 
-    def get_blank_index(self): #this is more effective that always using len(char) which could be erroneous
+    def get_blank_index(self):
         return self.blank_index
 
     def text_to_int(self, text):
