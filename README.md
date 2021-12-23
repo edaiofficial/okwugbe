@@ -40,7 +40,7 @@ The defualt valuse have been chosen so that you only have to make minimal change
 | `optimizer` | Optimizer | 'adamw' |
 |`freq_mask`|frequency masking (for speech augmentation)|30|
 |`time_mask`| time masking (for speech augmentation) | 100 |
-|`display_plot`| whether or not to display love plot during training| True|
+|`display_plot`| whether or not to plot metrics during training| True|
 
 ## Usage
 ```pip install okwugbe```
