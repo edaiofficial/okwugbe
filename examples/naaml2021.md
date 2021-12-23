@@ -6,15 +6,12 @@ Some of them are:
 - gradient accumulation which can be activated with `grad_acc=True` and setting `batch_multiplier` to your choice or using the default ones.
 
 
-
-
-
 ## Training marathon for the Third Nepal Winter School in AI, 2021
 The aim of this fun project is to give you practical experience with training an ASR model on a low-resource language. The reality is that training ASR models on low-resource languages is more challenging than with high-resource languages. This is because end-to-end neural networks are data hungry. However, there are some techniques to help you squeeze out the best performance from your low-resource data....and Okwugbe offers all these.
 
-For this marathon, You will need to:
+For this marathon, You will need to do the following:
 
-#### :one: Choose any low-resource language of your choice. 
+#### `:one:` Choose any low-resource language of your choice. 
 
     - You can use any of the low-resource languages from Common Voice. Use this table as a guide to know which languages are low-resource. 
     - Alternatively, you can use your own data.
