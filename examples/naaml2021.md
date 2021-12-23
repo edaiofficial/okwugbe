@@ -12,7 +12,130 @@ The aim of this fun project is to give you practical experience with training an
 For this marathon, You will need to do the following:
 
 #### :one: Choose any low-resource language of your choice. 
-- You can use any of the low-resource languages from Common Voice. Use this table as a guide to know which languages are low-resource. 
+- You can use any of the low-resource languages from Common Voice. Use this table as a guide to know which languages are low-resource.
+---
+size_categories:
+  ab:
+  - n<1K
+  ar:
+  - 10K<n<100K
+  as:
+  - n<1K
+  br:
+  - 10K<n<100K
+  ca:
+  - 100K<n<1M
+  cnh:
+  - 1K<n<10K
+  cs:
+  - 10K<n<100K
+  cv:
+  - 10K<n<100K
+  cy:
+  - 10K<n<100K
+  de:
+  - 100K<n<1M
+  dv:
+  - 1K<n<10K
+  el:
+  - 10K<n<100K
+  en:
+  - 100K<n<1M
+  eo:
+  - 10K<n<100K
+  es:
+  - 100K<n<1M
+  et:
+  - 10K<n<100K
+  eu:
+  - 10K<n<100K
+  fa:
+  - 10K<n<100K
+  fi:
+  - 1K<n<10K
+  fr:
+  - 100K<n<1M
+  fy-NL:
+  - 10K<n<100K
+  ga-IE:
+  - 1K<n<10K
+  hi:
+  - n<1K
+  hsb:
+  - 1K<n<10K
+  hu:
+  - 1K<n<10K
+  ia:
+  - 1K<n<10K
+  id:
+  - 10K<n<100K
+  it:
+  - 100K<n<1M
+  ja:
+  - 1K<n<10K
+  ka:
+  - 1K<n<10K
+  kab:
+  - 100K<n<1M
+  ky:
+  - 10K<n<100K
+  lg:
+  - 1K<n<10K
+  lt:
+  - 1K<n<10K
+  lv:
+  - 1K<n<10K
+  mn:
+  - 1K<n<10K
+  mt:
+  - 10K<n<100K
+  nl:
+  - 10K<n<100K
+  or:
+  - 1K<n<10K
+  pa-IN:
+  - 1K<n<10K
+  pl:
+  - 10K<n<100K
+  pt:
+  - 10K<n<100K
+  rm-sursilv:
+  - 1K<n<10K
+  rm-vallader:
+  - 1K<n<10K
+  ro:
+  - 1K<n<10K
+  ru:
+  - 10K<n<100K
+  rw:
+  - 100K<n<1M
+  sah:
+  - 1K<n<10K
+  sl:
+  - 1K<n<10K
+  sv-SE:
+  - 1K<n<10K
+  ta:
+  - 10K<n<100K
+  th:
+  - 10K<n<100K
+  tr:
+  - 1K<n<10K
+  tt:
+  - 10K<n<100K
+  uk:
+  - 10K<n<100K
+  vi:
+  - 1K<n<10K
+  vot:
+  - n<1K
+  zh-CN:
+  - 10K<n<100K
+  zh-HK:
+  - 10K<n<100K
+  zh-TW:
+  - 10K<n<100K
+---
 - Alternatively, you can use your own data.
 
 #### :two: Training with OkwuGbe.
