@@ -51,9 +51,9 @@ class TextTransform:
                 ch = self.char_map[c]
                 track+=c    
             except KeyError:
-                print("Error for character `{}` in this sentence: {}".format(c, text))
+                print("Error for character `{}` in this sentence: {}. Repplacing with blank index.".format(c, text))
               
-                ch = 0
+                ch = self.get_blank_index() 
             int_sequence.append(ch)
         return int_sequence
 
