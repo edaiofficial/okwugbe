@@ -1,5 +1,7 @@
 ## :runner: Training an ASR model on a low-resource language with Okwugbe
-The aim of this fun project is to give you practical experience with training an ASR model on a low-resource language. The reality is that training ASR models on low-resource languages is more challenging than with high-resource languages. This is because end-to-end neural networks are data hungry. However, there are some techniques to help you squeeze out the best performance from your low-resource data....and Okwugbe offers all these. This project will enable you figure them out practically.
+The aim of this fun project is to give you practical experience with training an ASR model on a low-resource language. The reality is that training ASR models on low-resource languages is more challenging than with high-resource languages.
+
+This is because end-to-end neural networks are data hungry. However, there are some techniques to help you squeeze out the best performance from your low-resource data....and Okwugbe offers all these. This project will enable you figure them out practically.
 
 For this marathon, You will need to do the following:
 
