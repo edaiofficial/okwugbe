@@ -19,7 +19,8 @@ class HidePrintStatement: #This originated from with the need to hide the cvutil
         return self._original_stdout
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        
+        sys.stdout.close()
+        sys.stderr.close()
         sys.stdout = self._original_stdout
         sys.stderr=self._stderr
 
