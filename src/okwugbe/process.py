@@ -13,6 +13,7 @@ class HidePrintStatement: #This originated with the need to hide the cvutils Val
     def __enter__(self):
         self._original_stdout = sys.stdout
         sys.stdout = open(os.devnull, 'w')
+        return self._original_stdout
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout.close()
