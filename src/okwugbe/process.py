@@ -8,7 +8,8 @@ from cvutils import Validator
 
 class HidePrintStatement: #This originated with the need to hide the cvutils Validator statements  
     def __init__(self):
-        pass
+        super(HidePrintStatement, self).__init__()
+        
     def __enter__(self):
         self._original_stdout = sys.stdout
         sys.stdout = open(os.devnull, 'w')
