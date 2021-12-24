@@ -1,7 +1,19 @@
+import sys
 import torch.nn as nn
 import torchaudio
 import torch
 from cvutils import Validator
+
+
+class HidePrintStatement: #This originated with the need to hide the cvutils Validator statements  
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, 'w')
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        sys.stdout = self._original_stdout
+
 
 class process:
     def __init__(self):
@@ -29,10 +41,11 @@ class process:
             if common_voice['use_common_voice']==True:   
 
                 try:
-                    validator = Validator(common_voice['lang'])
-                    utterance_validated = validator.validate(utterance)   
-                    if utterance_validated is not None:
-                        utterance = utterance_validated
+                    with HidePrintStatement:
+                        validator = Validator(common_voice['lang'])
+                        utterance_validated = validator.validate(utterance)   
+                        if utterance_validated is not None:
+                            utterance = utterance_validated
                 except Exception:
                     pass        
             

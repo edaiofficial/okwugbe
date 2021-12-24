@@ -1,13 +1,17 @@
 import re 
 import os
+import sys
 from datasets import load_dataset
 import unicodedata
 from cvutils import Alphabet
 
+##For Fon language
 accent_code = [b'\\u0301', b'\\u0300', b'\\u0306', b'\\u0308', b'\\u0303']
 alpha = {'ɔ': 0, 'ɛ': 5}
 accents = {b'\\u0301': 1, b'\\u0300': 2, b'\\u0306': 3, b'\\u0308': 4, b'\\u0303': 5}
 mapping = {1: 'ɔ́', 2: 'ɔ̀', 3: 'ɔ̆', 6: 'έ', 7: 'ὲ', 8: 'ɛ̆'}
+########################3
+
 
 
 def generate_character_set_from_transcripts(lang): #This is no longer in use! 
@@ -29,7 +33,6 @@ def generate_character_set_from_transcripts(lang): #This is no longer in use!
     return chars
 
 def generate_character_set(lang):
-    
     try:
         a = Alphabet(lang.lower().strip())
         characters = list(set(a.get_alphabet())) #This also includes SPACE character
