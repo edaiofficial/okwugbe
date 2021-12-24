@@ -75,7 +75,7 @@ train = Train_Okwugbe(use_common_voice=True, lang='mn') # for mongolian
 #Start the training
 train.run()
 ```
-Here are the list of our current supported languages in Common Voice.
+Here is the list of our current supported languages in Common Voice.
 |tt|en|de|fr|cy|br|cv|tr|ky|ga-IE|kab|ca|zh-TW|sl|it|nl|cnh|eo|et|fa|pt|eu|es|zh-CN|mn|sah|dv|rw|sv-SE|ru|id|ar|ta|ia|lv|ja|vot|ab|zh-HK|rm-sursilv|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |tatar|english|german|french|welsh|breton|chuvash|turkish|kyrgyz|irish|kabyle|catalan|taiwanese|slovenian|italian|dutch|hakha chin|esperanto|estonian|persian|portuguese|basque|spanish|chinese|mongolian|sakha|dhivehi|kinyarwanda|swedish|russian|indonesian|arabic|tamil|interlingua|latvian|japanese|votic|abkhaz|cantonese|romansh sursilvan|
@@ -88,6 +88,7 @@ Here are the list of our current supported languages in Common Voice.
 Wondering where to find dataset for your African language? Here are some resources to check:
 - [OpenSLR](https://www.openslr.org/resources.php)
 - [Mozilla Common Voice](https://commonvoice.mozilla.org/en/datasets)
+- [AfricaNLP-Public-Datasets](https://github.com/Andrews2017/africanlp-public-datasets)
 
 
 ## Debugging
