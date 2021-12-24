@@ -12,12 +12,16 @@ class HidePrintStatement: #This originated from with the need to hide the cvutil
         
     def __enter__(self):
         self._original_stdout = sys.stdout
+        self._stderr= sys.stderr
         sys.stdout = open(os.devnull, 'w')
+        sys.stderr= open(os.devnull, 'w')
+       
         return self._original_stdout
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        sys.stdout.close()
+        
         sys.stdout = self._original_stdout
+        sys.stderr=self._stderr
 
 
 class process:
@@ -45,9 +49,8 @@ class process:
 
             if common_voice['use_common_voice']==True:   
 
-                with HidePrintStatement() as hp:
+                with HidePrintStatement() as hp_:
                     try:
-                    
                         validator = Validator(common_voice['lang'])
                         utterance_validated = validator.validate(utterance)   
                         if utterance_validated is not None:
