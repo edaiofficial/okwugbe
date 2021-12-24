@@ -1,24 +1,18 @@
 import os
-from model import SpeechRecognitionModel
 import torch
+import colorama
+import numpy as np
 import torch.nn as nn
 from torch import optim
 import torch.nn.functional as F
-from metrics import Metrics
-from decoder import Decoders
-from texttransform import TextTransform
-from okwugbe_asr import OkwugbeDataset,OkwugbeDatasetForCommonVoice
-from process import process
-from earlystopping import EarlyStopping
-from metrics import Metrics
-from decoder import Decoders
-from texttransform import TextTransform
-from okwugbe_asr import OkwugbeDataset
-from process import process
-from earlystopping import EarlyStopping
-import colorama
-import numpy as np
-from commonvoice import generate_character_set
+from okwugbe.model import SpeechRecognitionModel
+from okwugbe.okwugbe_asr import OkwugbeDataset,OkwugbeDatasetForCommonVoice
+from okwugbe.process import process
+from okwugbe.earlystopping import EarlyStopping
+from okwugbe.metrics import Metrics
+from okwugbe.decoder import Decoders
+from okwugbe.texttransform import TextTransform
+from okwugbe.commonvoice import generate_character_set
 from IPython.display import Audio 
 from IPython.core.display import display
 from livelossplot import PlotLosses
