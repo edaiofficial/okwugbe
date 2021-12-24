@@ -6,7 +6,7 @@ import torch
 from cvutils import Validator
 
 
-class HidePrintStatement: #This originated with the need to hide the cvutils Validator statements  
+class HidePrintStatement: #This originated from with the need to hide the cvutils Validator statements  
     def __init__(self):
         super(HidePrintStatement, self).__init__()
         
@@ -45,7 +45,7 @@ class process:
 
             if common_voice['use_common_voice']==True:   
 
-                with HidePrintStatement:
+                with HidePrintStatement() as hp:
                     try:
                     
                         validator = Validator(common_voice['lang'])

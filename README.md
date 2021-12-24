@@ -34,7 +34,7 @@ The defualt valuse have been chosen so that you only have to make minimal change
 | `train_path` | Path to training set | required |
 | `test_path` | Path to testing set | required |
 | `learning_rate` | Learning rate | 3e-5 |
-| `batch_size` | Batch Size | 3e-5 |
+| `batch_size` | Batch Size | 20 |
 | `patience` | Early Stopping Patience | 20 |
 | `epochs` | Training epochs | 500 |
 | `optimizer` | Optimizer | 'adamw' |
@@ -119,19 +119,19 @@ supported_languages_of_common_voice = {
         }
 ```
 
-## TODO (as of now)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1PSWHO_umQPN8L9KACAVjKtc-Pgq0HxIY?usp=sharing) strictly for debugging!
-
-- Add automatic building of character set (this has been done in `commonvoice.py`)
-
 ## Tutorial
--[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1bZxd7yBOHlqIJBBUUImh8vwF4Zn_A7a5?usp=sharing) on using OkwuGbe
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1bZxd7yBOHlqIJBBUUImh8vwF4Zn_A7a5?usp=sharing) on using OkwuGbe
 - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/12XiQCuQzOr7lye2sFCvsn4Ch_DNevx4u?usp=sharing) on using OkwuGbe with Common Voice 
 
 ## ASR Data for African languages
 Wondering where to find dataset for your African language? Here are some resources to check:
 - [OpenSLR](https://www.openslr.org/resources.php)
 - [Mozilla Common Voice](https://commonvoice.mozilla.org/en/datasets)
+
+
+## Debugging
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1PSWHO_umQPN8L9KACAVjKtc-Pgq0HxIY?usp=sharing) strictly for debugging!
+
 
 ## Citation
 Please cite our paper using the citation below if you use our work in anyway:
