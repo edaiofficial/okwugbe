@@ -186,7 +186,7 @@ def test(model, device, test_loader, criterion, text_transform):
 
             for j in range(len(decoded_preds)):
                 print("Decoding Speech's Content")
-                print(f'AUDIO PATH: {audio_file_paths[j]}')
+              
                 display(Audio(str(audio_file_paths[j])))
                 test_cer.append(metrics.cer(decoded_targets[j], decoded_preds[j]))
                 test_wer.append(metrics.wer(decoded_targets[j], decoded_preds[j]))
@@ -246,18 +246,18 @@ def main(model, train_path, test_path, validation_size, learning_rate, batch_siz
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                                batch_size=hparams['batch_size'],
                                                shuffle=True,
-                                               collate_fn=lambda x: process.data_processing(x, text_transform, 'train',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask),
+                                               collate_fn=lambda x: process.data_processing(x, text_transform, data_type= 'train',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask,common_voice=common_voice),
                                                **kwargs)
     valid_loader = torch.utils.data.DataLoader(dataset=valid_dataset,
                                                batch_size=hparams['batch_size'],
                                                shuffle=False,
-                                               collate_fn=lambda x: process.data_processing(x, text_transform, 'valid',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask),
+                                               collate_fn=lambda x: process.data_processing(x, text_transform, data_type='valid',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask,common_voice=common_voice),
                                                **kwargs)
 
     test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                               batch_size=hparams['batch_size'],
                                               shuffle=False,
-                                              collate_fn=lambda x: process.data_processing(x, text_transform, 'test',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask),
+                                              collate_fn=lambda x: process.data_processing(x, text_transform, data_type='test',n_feats=n_feats,freq_mask=freq_mask,time_mask=time_mask,common_voice=common_voice),
                                               **kwargs)
 
     model = model.to(device)
