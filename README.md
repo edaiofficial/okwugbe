@@ -74,6 +74,10 @@ train = Train_Okwugbe(use_common_voice=True, lang='mn') # for mongolian
 train.run()
 ```
 Here are the list of our current supported languages in Common Voice.
+|tt|en|de|fr|cy|br|cv|tr|ky|ga-IE|kab|ca|zh-TW|sl|it|nl|cnh|eo|et|fa|pt|eu|es|zh-CN|mn|sah|dv|rw|sv-SE|ru|id|ar|ta|ia|lv|ja|vot|ab|zh-HK|rm-sursilv|
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|tatar|english|german|french|welsh|breton|chuvash|turkish|kyrgyz|irish|kabyle|catalan|taiwanese|slovenian|italian|dutch|hakha chin|esperanto|estonian|persian|portuguese|basque|spanish|chinese|mongolian|sakha|dhivehi|kinyarwanda|swedish|russian|indonesian|arabic|tamil|interlingua|latvian|japanese|votic|abkhaz|cantonese|romansh sursilvan|
+
 ```bash
 supported_languages_of_common_voice = {
             "tatar": "tt",
@@ -119,7 +123,7 @@ supported_languages_of_common_voice = {
         }
 ```
 
-## Tutorial
+## Tutorials
 - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1bZxd7yBOHlqIJBBUUImh8vwF4Zn_A7a5?usp=sharing) on using OkwuGbe
 - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/12XiQCuQzOr7lye2sFCvsn4Ch_DNevx4u?usp=sharing) on using OkwuGbe with Common Voice 
 
@@ -130,7 +134,7 @@ Wondering where to find dataset for your African language? Here are some resourc
 
 
 ## Debugging
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1PSWHO_umQPN8L9KACAVjKtc-Pgq0HxIY?usp=sharing) strictly for debugging!
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1PSWHO_umQPN8L9KACAVjKtc-Pgq0HxIY?usp=sharing) is strictly for debugging!
 
 
 ## Citation

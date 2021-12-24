@@ -341,8 +341,7 @@ class Train_Okwugbe:
         self.with_attention = with_attention
         self.batch_multiplier = batch_multiplier
         self.grad_acc = grad_acc
-        self.model_path = model_path
-        self.model_path = self.model_path+'_'+lang if lang!=None else self.model_path
+        self.model_path = model_path       
         self.learning_rate = learning_rate
         self.batch_size = batch_size
         self.patience = patience

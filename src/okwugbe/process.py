@@ -53,7 +53,7 @@ class process:
                 with HidePrintStatement() as hp_:
                     try:
                         validator = Validator(common_voice['lang'])
-                        utterance_validated = validator.validate(utterance)   
+                        utterance_validated = validator.validate(utterance)
                         if utterance_validated is not None:
                             utterance = utterance_validated
                     except Exception:
