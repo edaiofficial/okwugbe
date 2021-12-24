@@ -34,7 +34,8 @@ After training (and possibly tweaking the parameters to see if you can get bette
 
 ##### :four: What You Gain
 
-The most exciting gift though is practical experience with training an ASR model on a low-resource language :smile:! 
+The most exciting gift though is practical experience with training an ASR model on a low-resource language :smile:!
+ 
 Surprise presents are planned to be given to successful participants.
 
 ##### :five: Contact for enquiries
