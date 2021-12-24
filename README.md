@@ -6,7 +6,31 @@ Automatic Speech Recognition Library for (low-resource) African Languages
 Our aim is to foster ASR for African languages by making the whole process--from dataset gathering and preprocessing to training--as easy as possible. This library follows our work [Okwugbé](https://arxiv.org/abs/2103.07762) on ASR for Fon and Igbo. Based on the architecture of the network described in our
 paper, it aims at easing the training process of ASR for other languages.
 The primary targets are African languages, but it supports other languages as well
-## Parameters
+
+
+## Usage
+```pip install okwugbe```
+```python
+#Import the trainer instance
+from train_eval import Train_Okwugbe 
+
+train_path = '/path/to/training_file.csv'
+test_path = '/path/to/testing_file.csv'
+characters_set = '/path/to/character_set.txt'
+ 
+"""
+ /path/to/training_file.csv and /path/to/testing_file.csv are meant to be csv files with two columns:
+    the first one containing the full paths to audio wav files
+    the second one containing the textual transcription of audio contents
+"""
+
+#Initialize the trainer instance
+train = Train_Okwugbe(train_path, test_path, characters_set)
+
+#Start the training
+train.run()
+```
+### Parameters
 Here are the parameters for the package, as well as their default values.
 
 The defualt valuse have been chosen so that you only have to make minimal changes to get a good ASR model going.
@@ -42,28 +66,6 @@ The defualt valuse have been chosen so that you only have to make minimal change
 |`time_mask`| time masking (for speech augmentation) | 100 |
 |`display_plot`| whether or not to plot metrics during training| True|
 
-## Usage
-```pip install okwugbe```
-```python
-#Import the trainer instance
-from train_eval import Train_Okwugbe 
-
-train_path = '/path/to/training_file.csv'
-test_path = '/path/to/testing_file.csv'
-characters_set = '/path/to/character_set.txt'
- 
-"""
- /path/to/training_file.csv and /path/to/testing_file.csv are meant to be csv files with two columns:
-    the first one containing the full paths to audio wav files
-    the second one containing the textual transcription of audio contents
-"""
-
-#Initialize the trainer instance
-train = Train_Okwugbe(train_path, test_path, characters_set)
-
-#Start the training
-train.run()
-```
 ### Integration with Common Voicee
 You easily train on [Common Voice](https://commonvoice.mozilla.org/en) data set with Okwugbe by specifying `use_common_voice=True` and setting `lang` to the language code of your choice. This language must be hosted on Common Voice.
 ```python
