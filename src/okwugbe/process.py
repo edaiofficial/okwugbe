@@ -40,14 +40,15 @@ class process:
 
             if common_voice['use_common_voice']==True:   
 
-                try:
-                    with HidePrintStatement:
+                with HidePrintStatement:
+                    try:
+                    
                         validator = Validator(common_voice['lang'])
                         utterance_validated = validator.validate(utterance)   
                         if utterance_validated is not None:
                             utterance = utterance_validated
-                except Exception:
-                    pass        
+                    except Exception:
+                        pass        
             
             if data_type == 'train':
                 spec = train_audio_transforms(waveform).squeeze(0).transpose(0, 1)
