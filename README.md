@@ -6,7 +6,31 @@ Automatic Speech Recognition Library for (low-resource) African Languages
 Our aim is to foster ASR for African languages by making the whole process--from dataset gathering and preprocessing to training--as easy as possible. This library follows our work [Okwugbé](https://arxiv.org/abs/2103.07762) on ASR for Fon and Igbo. Based on the architecture of the network described in our
 paper, it aims at easing the training process of ASR for other languages.
 The primary targets are African languages, but it supports other languages as well
-## Parameters
+
+
+## Usage
+```pip install okwugbe```
+```python
+#Import the trainer instance
+from train_eval import Train_Okwugbe 
+
+train_path = '/path/to/training_file.csv'
+test_path = '/path/to/testing_file.csv'
+characters_set = '/path/to/character_set.txt'
+ 
+"""
+ /path/to/training_file.csv and /path/to/testing_file.csv are meant to be csv files with two columns:
+    the first one containing the full paths to audio wav files
+    the second one containing the textual transcription of audio contents
+"""
+
+#Initialize the trainer instance
+train = Train_Okwugbe(train_path, test_path, characters_set)
+
+#Start the training
+train.run()
+```
+### Parameters
 Here are the parameters for the package, as well as their default values.
 
 The defualt valuse have been chosen so that you only have to make minimal changes to get a good ASR model going.
@@ -34,7 +58,7 @@ The defualt valuse have been chosen so that you only have to make minimal change
 | `train_path` | Path to training set | required |
 | `test_path` | Path to testing set | required |
 | `learning_rate` | Learning rate | 3e-5 |
-| `batch_size` | Batch Size | 3e-5 |
+| `batch_size` | Batch Size | 20 |
 | `patience` | Early Stopping Patience | 20 |
 | `epochs` | Training epochs | 500 |
 | `optimizer` | Optimizer | 'adamw' |
@@ -42,28 +66,6 @@ The defualt valuse have been chosen so that you only have to make minimal change
 |`time_mask`| time masking (for speech augmentation) | 100 |
 |`display_plot`| whether or not to plot metrics during training| True|
 
-## Usage
-```pip install okwugbe```
-```python
-#Import the trainer instance
-from train_eval import Train_Okwugbe 
-
-train_path = '/path/to/training_file.csv'
-test_path = '/path/to/testing_file.csv'
-characters_set = '/path/to/character_set.txt'
- 
-"""
- /path/to/training_file.csv and /path/to/testing_file.csv are meant to be csv files with two columns:
-    the first one containing the full paths to audio wav files
-    the second one containing the textual transcription of audio contents
-"""
-
-#Initialize the trainer instance
-train = Train_Okwugbe(train_path, test_path, characters_set)
-
-#Start the training
-train.run()
-```
 ### Integration with Common Voicee
 You easily train on [Common Voice](https://commonvoice.mozilla.org/en) data set with Okwugbe by specifying `use_common_voice=True` and setting `lang` to the language code of your choice. This language must be hosted on Common Voice.
 ```python
@@ -73,62 +75,25 @@ train = Train_Okwugbe(use_common_voice=True, lang='mn') # for mongolian
 #Start the training
 train.run()
 ```
-Here are the list of our current supported languages in Common Voice.
-```bash
-supported_languages_of_common_voice = {
-            "tatar": "tt",
-            "english": "en",
-            "german": "de",
-            "french": "fr",
-            "welsh": "cy",
-            "breton": "br",
-            "chuvash": "cv",
-            "turkish": "tr",
-            "kyrgyz": "ky",
-            "irish": "ga-IE",
-            "kabyle": "kab",
-            "catalan": "ca",
-            "taiwanese": "zh-TW",
-            "slovenian": "sl",
-            "italian": "it",
-            "dutch": "nl",
-            "hakha chin": "cnh",
-            "esperanto": "eo",
-            "estonian": "et",
-            "persian": "fa",
-            "portuguese": "pt",
-            "basque": "eu",
-            "spanish": "es",
-            "chinese": "zh-CN",
-            "mongolian": "mn",
-            "sakha": "sah",
-            "dhivehi": "dv",
-            "kinyarwanda": "rw",
-            "swedish": "sv-SE",
-            "russian": "ru",
-            "indonesian": "id",
-            "arabic": "ar",
-            "tamil": "ta",
-            "interlingua": "ia",
-            "latvian": "lv",
-            "japanese": "ja",
-            "votic": "vot",
-            "abkhaz": "ab",
-            "cantonese": "zh-HK",
-            "romansh sursilvan": "rm-sursilv"
-        }
-```
+Here is the list of our current supported languages in Common Voice.
+|tt|en|de|fr|cy|br|cv|tr|ky|ga-IE|kab|ca|zh-TW|sl|it|nl|cnh|eo|et|fa|pt|eu|es|zh-CN|mn|sah|dv|rw|sv-SE|ru|id|ar|ta|ia|lv|ja|vot|ab|zh-HK|rm-sursilv|
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|tatar|english|german|french|welsh|breton|chuvash|turkish|kyrgyz|irish|kabyle|catalan|taiwanese|slovenian|italian|dutch|hakha chin|esperanto|estonian|persian|portuguese|basque|spanish|chinese|mongolian|sakha|dhivehi|kinyarwanda|swedish|russian|indonesian|arabic|tamil|interlingua|latvian|japanese|votic|abkhaz|cantonese|romansh sursilvan|
 
-## TODO (as of now)
-* Add automatic building of character set (this has been done in `commonvoice.py`)
-## Tutorial
-- Here's a [Colab tutorial](https://colab.research.google.com/drive/1bZxd7yBOHlqIJBBUUImh8vwF4Zn_A7a5?usp=sharing) on using OkwuGbe
-- Here's a [Colab tutorial](https://colab.research.google.com/drive/12XiQCuQzOr7lye2sFCvsn4Ch_DNevx4u?usp=sharing) on using OkwuGbe with Common Voice 
+## Tutorials
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1bZxd7yBOHlqIJBBUUImh8vwF4Zn_A7a5?usp=sharing) on using OkwuGbe
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/12XiQCuQzOr7lye2sFCvsn4Ch_DNevx4u?usp=sharing) on using OkwuGbe with Common Voice 
 
 ## ASR Data for African languages
 Wondering where to find dataset for your African language? Here are some resources to check:
 - [OpenSLR](https://www.openslr.org/resources.php)
 - [Mozilla Common Voice](https://commonvoice.mozilla.org/en/datasets)
+- [AfricaNLP-Public-Datasets](https://github.com/Andrews2017/africanlp-public-datasets)
+
+
+## Debugging
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1PSWHO_umQPN8L9KACAVjKtc-Pgq0HxIY?usp=sharing) is strictly for debugging!
+
 
 ## Citation
 Please cite our paper using the citation below if you use our work in anyway:

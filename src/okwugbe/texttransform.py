@@ -18,7 +18,7 @@ class TextTransform:
         
         if chars_ == ['']:
             raise ValueError(
-                "Length of the unique characters set should be > 0. Expecting a .txt file with one character per line")
+                "Length of the unique characters set should be > 0. Expecting a `.txt` file with one character per line")
 
         all_chars = [c for c in special_chars if c not in chars_]  + chars_
         self.chars = [c for c in all_chars]
