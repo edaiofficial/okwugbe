@@ -33,7 +33,8 @@ train.run()
 ### Parameters
 Here are the parameters for the package, as well as their default values.
 
-The defualt valuse have been chosen so that you only have to make minimal changes to get a good ASR model going.
+The default values have been chosen so that you only have to make minimal changes to get a good ASR model going.
+
 | Parameter | Description | default | 
 | --- | --- | --- |
 | `use_common_voice` | Whether or not to use common voice | False |
@@ -76,6 +77,7 @@ train = Train_Okwugbe(use_common_voice=True, lang='mn') # for mongolian
 train.run()
 ```
 Here is the list of our current supported languages in Common Voice.
+
 |tt|en|de|fr|cy|br|cv|tr|ky|ga-IE|kab|ca|zh-TW|sl|it|nl|cnh|eo|et|fa|pt|eu|es|zh-CN|mn|sah|dv|rw|sv-SE|ru|id|ar|ta|ia|lv|ja|vot|ab|zh-HK|rm-sursilv|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |tatar|english|german|french|welsh|breton|chuvash|turkish|kyrgyz|irish|kabyle|catalan|taiwanese|slovenian|italian|dutch|hakha chin|esperanto|estonian|persian|portuguese|basque|spanish|chinese|mongolian|sakha|dhivehi|kinyarwanda|swedish|russian|indonesian|arabic|tamil|interlingua|latvian|japanese|votic|abkhaz|cantonese|romansh sursilvan|
